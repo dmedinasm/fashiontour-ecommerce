@@ -6,13 +6,13 @@ const Hero = () => {
   <div className="mx-auto max-w-screen-xl px-4 py-24 lg:flex lg:h-screen ">
     <div className="mx-auto max-w-xl text-center">
       <h1 className="text-3xl font-extrabold sm:text-5xl">
-        Fashion Tour, Marketplace
-        Access Free &nbsp;
-        <strong className="font-extrabold text-primary sm:block"> Source Code & Assets</strong>
+        <span className="text-primary">Fashion Tour</span> A Marketplace
+        for Fashion Lovers
+        <strong className="font-extrabold text-primary sm:block"> Discover unique products</strong>
       </h1>
 
       <p className="mt-4 sm:text-xl/relaxed">
-       Now get free source code and assets for all proyect with membership
+       Now get free discount code  for all of our products.
       </p>
 
       <div className="mt-8 flex flex-wrap justify-center gap-4">
