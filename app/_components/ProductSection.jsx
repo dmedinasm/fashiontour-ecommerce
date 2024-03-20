@@ -10,18 +10,14 @@ const ProductSection = () => {
   }, [])
 
   const getLatestProducts_ = () => {
-    GlobalApi.getLatestProducts().then(res => {
+    GlobalApi.getMostRatedProducts().then(res => {
       console.log(res)
       setProductList(res)
     })
   }
   return (
     <div className='px-10 md:px-20 '>
-      <h2 className='font-bold text-[20px] mt-12 mb-4'>Brand New</h2>
-      {productList && <ProductList productList={productList} />}
-      <h2 className='font-bold text-[20px] mt-12 mb-4'>Source Code Products</h2>
-      {productList && <ProductList productList={productList} />}
-      <h2 className='font-bold text-[20px] mt-12 mb-4'>Icon Packs Products</h2>
+      <h2 className='font-bold text-[20px] mt-12 mb-4'>Most Rated Products</h2>
       {productList && <ProductList productList={productList} />}
     </div>
   )
