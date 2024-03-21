@@ -1,8 +1,17 @@
+'use client'
+import { UserButton, useUser } from '@clerk/nextjs'// Return the current user auth state
+import { ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Header = () => {
-  return (
+  const [isLogin, setIsLogin] = useState()
+  const { user } = useUser()
+
+  useEffect(() => {
+    setIsLogin(window.location.href.toString().includes('/sign-in'))
+  }, [user])
+  return !isLogin && (
     <header class="bg-white shadow-sm">
   <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between">
@@ -38,10 +47,11 @@ const Header = () => {
       </div>
 
       <div class="flex items-center gap-4">
-        <div class="sm:flex sm:gap-4">
+        {!user
+          ? <div class="sm:flex sm:gap-4">
           <a
             class="rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white shadow hover:bg-blue-600"
-            href="#"
+            href="sign-in"
           >
             Login
           </a>
@@ -49,12 +59,17 @@ const Header = () => {
           <div class="hidden sm:flex">
             <a
               class="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-primary hover:text-blue-400"
-              href="#"
+              href="/sign-up"
             >
               Register
             </a>
           </div>
         </div>
+          : <div className='flex items-center gap-5'>
+                <h2 className='flex gap-1 cursor-pointer'><ShoppingCart />(0)</h2>
+                <UserButton />
+            </div>
+        }
 
         <div class="block md:hidden">
           <button class="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75">
