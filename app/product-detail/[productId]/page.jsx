@@ -1,11 +1,12 @@
 'use client'
-import Breadcrumb from '@/app/_components/Breadcrumb'
-import GlobalApi from '@/app/_utils/GlobalApi'
+
+import GlobalApi from '../../_utils/GlobalApi'
 import React, { useEffect, useState } from 'react'
 import ProductBanner from '../_components/ProductBanner'
 import ProductInfo from '../_components/ProductInfo'
-import ProductList from '@/app/_components/ProductList'
+import ProductList from '../../_components/ProductList'
 import { usePathname } from 'next/navigation'
+import Breadcrumb from '../../_components/Breadcrumb'
 
 const ProductDetail = ({ params }) => {
   // Use to get Url path

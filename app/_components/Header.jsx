@@ -5,13 +5,13 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 
 const Header = () => {
-  const [isLogin, setIsLogin] = useState()
+  const [isTryLogin, setIsTryLogin] = useState()
   const { user } = useUser()
 
   useEffect(() => {
-    setIsLogin(window.location.href.toString().includes('/sign-in'))
+    setIsTryLogin(window.location.href.toString().includes('/sign-in') || window.location.href.toString().includes('/sign-up'))
   }, [user])
-  return !isLogin && (
+  return !isTryLogin && (
     <header class="bg-white shadow-sm">
   <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between">
@@ -51,7 +51,7 @@ const Header = () => {
           ? <div class="sm:flex sm:gap-4">
           <a
             class="rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white shadow hover:bg-blue-600"
-            href="sign-in"
+            href="/sign-in"
           >
             Login
           </a>
