@@ -9,8 +9,8 @@ const Header = () => {
   const { user } = useUser()
 
   useEffect(() => {
-    setIsTryLogin(window.location.href.toString().includes('/sign-in') || window.location.href.toString().includes('/sign-up'))
-  }, [user])
+    setIsTryLogin(window.location.href.toString().includes('sign-in') || window.location.href.toString().includes('sign-up'))
+  }, [])
   return !isTryLogin && (
     <header class="bg-white shadow-sm">
   <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
