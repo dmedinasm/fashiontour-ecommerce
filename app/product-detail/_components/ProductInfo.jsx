@@ -1,17 +1,34 @@
 import { ShoppingCart } from 'lucide-react'
-import React from 'react'
+import React, { useContext } from 'react'
 import SkeltonEffect from './SkeltonEffect'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
+import GlobalApi from '../../_utils/GlobalApi'
+import { CartContext } from '../../_context/CartContext'
 
 const ProductInfo = ({ product }) => {
   const { user } = useUser()
   const router = useRouter()
+  const { cart, setAddToCart } = useContext(CartContext)
   const onAddToCartClick = () => {
     if (!user) {
       router.push('/sign-in')
     } else {
       // Logic to Add to Cart
+      const data = {
+        data: {
+          userName: user.fullName,
+          email: user.primaryEmailAddress.emailAddress,
+          products: product?.id
+        }
+      }
+
+      GlobalApi.addToCart(data).then(resp => {
+        console.log('Add to Cart', resp)
+        setAddToCart(cart => [...cart, product])
+      }, (error) => {
+        console.log('Error', error)
+      })
     }
   }
   return (

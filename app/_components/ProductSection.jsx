@@ -11,7 +11,7 @@ const ProductSection = () => {
 
   const getRatedProducts_ = () => {
     GlobalApi.getMostRatedProducts().then(res => {
-      const data = res.map(product => {
+      /* const data = res.map(product => {
         const title = product.attributes.title
         const category = product.attributes.category
         const description = product.attributes.description
@@ -19,8 +19,8 @@ const ProductSection = () => {
         const image = `http://localhost:1337${product.attributes.image.data.attributes.url}`
         const id = product.id
         return { title, category, description, price, image, id }
-      })
-      setProductList(data)
+      }) */
+      setProductList(res)
     })
   }
   return (

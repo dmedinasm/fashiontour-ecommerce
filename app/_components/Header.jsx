@@ -2,11 +2,24 @@
 import { UserButton, useUser } from '@clerk/nextjs'// Return the current user auth state
 import { ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { CartContext } from '../_context/CartContext'
+import GlobalApi from '../_utils/GlobalApi'
 
 const Header = () => {
   const [isTryLogin, setIsTryLogin] = useState()
   const { user } = useUser()
+  const { cart, setAddToCart } = useContext(CartContext)
+
+  const getCartItems = () => {
+    GlobalApi.getUserCartItems(user.primaryEmailAddress.emailAddress).then(res => {
+      setAddToCart(res)
+    })
+  }
+
+  useEffect(() => {
+    user && getCartItems()
+  }, [user])
 
   useEffect(() => {
     setIsTryLogin(window.location.href.toString().includes('sign-in') || window.location.href.toString().includes('sign-up'))
@@ -66,7 +79,7 @@ const Header = () => {
           </div>
         </div>
           : <div className='flex items-center gap-5'>
-                <h2 className='flex gap-1 cursor-pointer'><ShoppingCart />(0)</h2>
+                <h2 className='flex gap-1 cursor-pointer'><ShoppingCart />({cart?.length})</h2>
                 <UserButton />
             </div>
         }
