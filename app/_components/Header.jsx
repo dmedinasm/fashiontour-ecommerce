@@ -5,7 +5,7 @@ import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
 import { CartContext } from '../_context/CartContext'
 import GlobalApi from '../_utils/GlobalApi'
-
+import Cart from './Cart'
 const Header = () => {
   const [isTryLogin, setIsTryLogin] = useState()
   const { user } = useUser()
@@ -83,7 +83,7 @@ const Header = () => {
                 <UserButton />
             </div>
         }
-
+        <Cart/>
         <div class="block md:hidden">
           <button class="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75">
             <svg

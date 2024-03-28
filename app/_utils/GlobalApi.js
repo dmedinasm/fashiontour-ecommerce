@@ -64,7 +64,7 @@ const addToCart = async (data) => {
 }
 
 const getUserCartItems = async (email) => {
-  const res = await fetch(`${apiUrl}/carts?filters[email][$eq]=${email}&populate=*`, {
+  const res = await fetch(`${apiUrl}/carts?filters[email][$eq]=${email}&populate[products][populate]=*`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -73,6 +73,7 @@ const getUserCartItems = async (email) => {
   })
   const products = await res.json()
   const { data } = products
+  console.log(data)
   return data
 }
 
@@ -81,5 +82,6 @@ export default {
   getProductById,
   getProductListByCategory,
   addToCart,
-  getUserCartItems
+  getUserCartItems,
+  Url
 }
