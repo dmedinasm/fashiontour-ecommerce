@@ -9,8 +9,9 @@ import Cart from './Cart'
 const Header = () => {
   const [isTryLogin, setIsTryLogin] = useState()
   const { user } = useUser()
-  const { cart, setAddToCart } = useContext(CartContext)
-
+  const { addedToCart } = useContext(CartContext)
+  const [cart, setAddToCart] = useState([])
+  const [openCart, setOpenCart] = useState(false)
   const getCartItems = () => {
     GlobalApi.getUserCartItems(user.primaryEmailAddress.emailAddress).then(res => {
       setAddToCart(res)
@@ -19,7 +20,12 @@ const Header = () => {
 
   useEffect(() => {
     user && getCartItems()
-  }, [user])
+  }, [user, addedToCart])
+
+  useEffect(() => {
+    openCart === false &&
+    setOpenCart(true)
+  }, [cart])
 
   useEffect(() => {
     setIsTryLogin(window.location.href.toString().includes('sign-in') || window.location.href.toString().includes('sign-up'))
@@ -79,11 +85,13 @@ const Header = () => {
           </div>
         </div>
           : <div className='flex items-center gap-5'>
-                <h2 className='flex gap-1 cursor-pointer'><ShoppingCart />({cart?.length})</h2>
+                <h2 className='flex gap-1 cursor-pointer' onClick={() => setOpenCart(!openCart)}><ShoppingCart />({cart?.length})</h2>
                 <UserButton />
             </div>
         }
-        <Cart/>
+
+        {openCart && <Cart cart={cart}/>}
+
         <div class="block md:hidden">
           <button class="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75">
             <svg

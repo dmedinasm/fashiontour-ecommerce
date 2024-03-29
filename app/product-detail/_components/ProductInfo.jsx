@@ -1,15 +1,15 @@
 import { ShoppingCart } from 'lucide-react'
-import React, { useContext } from 'react'
 import SkeltonEffect from './SkeltonEffect'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import GlobalApi from '../../_utils/GlobalApi'
+import { useContext } from 'react'
 import { CartContext } from '../../_context/CartContext'
 
 const ProductInfo = ({ product }) => {
   const { user } = useUser()
   const router = useRouter()
-  const { cart, setAddToCart } = useContext(CartContext)
+  const { setAddedToCart } = useContext(CartContext)
   const onAddToCartClick = () => {
     if (!user) {
       router.push('/sign-in')
@@ -24,8 +24,8 @@ const ProductInfo = ({ product }) => {
       }
 
       GlobalApi.addToCart(data).then(resp => {
-        console.log('Add to Cart', resp)
-        setAddToCart(cart => [...cart, product])
+        console.log(resp)
+        setAddedToCart(resp)
       }, (error) => {
         console.log('Error', error)
       })
