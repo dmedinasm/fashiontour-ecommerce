@@ -77,11 +77,23 @@ const getUserCartItems = async (email) => {
   return data
 }
 
+const deleteCartItem = async (id) => {
+  const res = await fetch(`${apiUrl}/carts/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey} `
+    }
+  })
+  const dataResp = res.json()
+  return dataResp
+}
 export default {
   getMostRatedProducts,
   getProductById,
   getProductListByCategory,
   addToCart,
   getUserCartItems,
-  Url
+  Url,
+  deleteCartItem
 }

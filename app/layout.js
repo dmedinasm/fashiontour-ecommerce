@@ -14,10 +14,11 @@ const inter = Outfit({ subsets: ['latin'] })
 } */
 
 export default function RootLayout ({ children }) {
-  const [addedToCart, setAddedToCart] = useState([])
+  const [changedCart, setChangedCart] = useState([])
+  const [cart, setAddToCart] = useState([])
   return (
     <ClerkProvider>
-      <CartContext.Provider value={{ addedToCart, setAddedToCart }}>
+      <CartContext.Provider value={{ changedCart, setChangedCart, cart, setAddToCart }}>
       <html lang="en">
       <body className={inter.className}>
         <Header/>

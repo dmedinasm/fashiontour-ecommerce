@@ -9,7 +9,7 @@ import { CartContext } from '../../_context/CartContext'
 const ProductInfo = ({ product }) => {
   const { user } = useUser()
   const router = useRouter()
-  const { setAddedToCart } = useContext(CartContext)
+  const { setChangedCart } = useContext(CartContext)
   const onAddToCartClick = () => {
     if (!user) {
       router.push('/sign-in')
@@ -25,7 +25,7 @@ const ProductInfo = ({ product }) => {
 
       GlobalApi.addToCart(data).then(resp => {
         console.log(resp)
-        setAddedToCart(resp)
+        setChangedCart(resp)
       }, (error) => {
         console.log('Error', error)
       })

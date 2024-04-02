@@ -9,8 +9,8 @@ import Cart from './Cart'
 const Header = () => {
   const [isTryLogin, setIsTryLogin] = useState()
   const { user } = useUser()
-  const { addedToCart } = useContext(CartContext)
-  const [cart, setAddToCart] = useState([])
+  const { changedCart } = useContext(CartContext)
+  const { cart, setAddToCart } = useContext(CartContext)
   const [openCart, setOpenCart] = useState(false)
   const getCartItems = () => {
     GlobalApi.getUserCartItems(user.primaryEmailAddress.emailAddress).then(res => {
@@ -20,7 +20,7 @@ const Header = () => {
 
   useEffect(() => {
     user && getCartItems()
-  }, [user, addedToCart])
+  }, [user, changedCart])
 
   useEffect(() => {
     openCart === false &&
