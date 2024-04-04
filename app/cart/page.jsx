@@ -2,11 +2,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { CartContext } from '../_context/CartContext'
 import GlobalApi from '../_utils/GlobalApi'
+import { useRouter } from 'next/navigation'
 
 const Cart = () => {
   const { cart } = useContext(CartContext)
   const { setChangedCart } = useContext(CartContext)
   const [totalPrice, setTotalPrice] = useState(0)
+  const router = useRouter()
 
   useEffect(() => {
     cart && getTotalAmount()
@@ -93,12 +95,12 @@ const Cart = () => {
             </dl>
 
             <div className="flex justify-end">
-              <a
-                href="/checkout"
+              <button
+                onClick={() => router.push(`/checkout?amount=${totalPrice}`)}
                 className="block rounded bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600"
               >
                 Checkout
-              </a>
+              </button>
             </div>
           </div>
         </div>
