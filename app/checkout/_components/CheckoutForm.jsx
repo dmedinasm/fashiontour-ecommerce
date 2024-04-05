@@ -1,12 +1,18 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
+import GlobalApi from '../../_utils/GlobalApi'
+import { useUser } from '@clerk/nextjs'
+import { CartContext } from '../../_context/CartContext'
 
 const CheckoutForm = ({ amount }) => {
   const stripe = useStripe()
   const elements = useElements()
+  const { user } = useUser()
+  const { cart, setChangedCart } = useContext(CartContext)
   const [errorMessage, setErrorMessage] = useState()
   const [loading, setLoading] = useState(false)
+  console.log(cart)
   const handleError = (error) => {
     setLoading(false)
     setErrorMessage(error.message)
@@ -27,7 +33,7 @@ const CheckoutForm = ({ amount }) => {
       handleError(submitError)
       return
     }
-
+    createOrder_()
     const res = await fetch('/api/create-intent', {
       method: 'POST',
       body: JSON.stringify({ amount })
@@ -50,6 +56,32 @@ const CheckoutForm = ({ amount }) => {
     // methods like iDEAL, your customer will be redirected to an intermediate
     // site first to authorize the payment, then redirected to the `return_url`.
     // }
+  }
+
+  const createOrder_ = () => {
+    const productsIds = cart.map(element => {
+      return element?.attributes?.products?.data[0].id
+    })
+    const data = {
+      data: {
+        email: user.primaryEmailAddress.emailAddress,
+        amount,
+        userName: user.fullName,
+        products: productsIds
+      }
+    }
+
+    GlobalApi.createOrder(data).then(resp => {
+      if (resp) {
+        cart.forEach(element => {
+          GlobalApi.deleteCartItem(element.id).then(resp => {
+            setChangedCart(resp)
+          })
+        })
+      }
+    }, (error) => {
+      console.log('Error', error)
+    })
   }
 
   return (
