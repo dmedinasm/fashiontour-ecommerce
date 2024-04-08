@@ -34,6 +34,7 @@ const CheckoutForm = ({ amount }) => {
       return
     }
     createOrder_()
+    sendEmail()
     const res = await fetch('/api/create-intent', {
       method: 'POST',
       body: JSON.stringify({ amount })
@@ -75,13 +76,22 @@ const CheckoutForm = ({ amount }) => {
       if (resp) {
         cart.forEach(element => {
           GlobalApi.deleteCartItem(element.id).then(resp => {
-            setChangedCart(resp)
+            console.log(resp)
           })
         })
+        setChangedCart(resp)
       }
     }, (error) => {
       console.log('Error', error)
     })
+  }
+
+  const sendEmail = async () => {
+    const res = await fetch('/api/send-email', {
+      method: 'POST'
+    })
+    const data = await res.json()
+    console.log(data)
   }
 
   return (
