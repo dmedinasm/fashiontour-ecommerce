@@ -88,7 +88,12 @@ const CheckoutForm = ({ amount }) => {
 
   const sendEmail = async () => {
     const res = await fetch('/api/send-email', {
-      method: 'POST'
+      method: 'POST',
+      body: JSON.stringify({
+        amount,
+        email: user.primaryEmailAddress.emailAddress,
+        fullName: user.fullName
+      })
     })
     const data = await res.json()
     console.log(data)
