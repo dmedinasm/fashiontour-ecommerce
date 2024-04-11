@@ -1,38 +1,16 @@
 'use client'
-
-import GlobalApi from '../../_utils/GlobalApi'
-import React, { useEffect, useState } from 'react'
 import ProductBanner from '../_components/ProductBanner'
 import ProductInfo from '../_components/ProductInfo'
 import ProductList from '../../_components/ProductList'
 import { usePathname } from 'next/navigation'
 import Breadcrumb from '../../_components/Breadcrumb'
-
+import { useSingleProduct } from '../../_hooks/useSingleProduct'
+import { useProductsByCategory } from '../../_hooks/useProductsByCategory'
 const ProductDetail = ({ params }) => {
+  const { productDetail } = useSingleProduct({ id: params?.productId })
+  const { similarProducts } = useProductsByCategory({ category: productDetail?.category })
   // Use to get Url path
   const path = usePathname()
-  const [productDetail, setProductDetail] = useState()
-  const [similarProducts, setSimilarProducts] = useState([])
-  useEffect(() => {
-    params?.productId && getProductById_()
-  }, [params?.productId])
-
-  useEffect(() => {
-    productDetail?.category && getProductByCategory_()
-  }, [productDetail?.category])
-  const getProductById_ = () => {
-    GlobalApi.getProductById(params?.productId).then(res => {
-      console.log(res)
-      setProductDetail(res)
-    })
-  }
-
-  const getProductByCategory_ = () => {
-    GlobalApi.getProductListByCategory(productDetail?.category).then(res => {
-      console.log(res)
-      setSimilarProducts(res)
-    })
-  }
   return (
     <div>
       <div className='py-12 px-10 sm:px-28'>
