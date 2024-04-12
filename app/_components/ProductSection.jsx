@@ -1,8 +1,8 @@
 'use client'
 import ProductList from './ProductList'
-import { useRatedProducts } from '../_hooks/useRatedProducts'
+import { useProducts } from '../_hooks/useProducts'
 const ProductSection = () => {
-  const { productList } = useRatedProducts()
+  const { productList } = useProducts()
 
   return (
     <div className='px-10 md:px-20 '>

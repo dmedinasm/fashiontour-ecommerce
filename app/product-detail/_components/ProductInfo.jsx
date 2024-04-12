@@ -2,10 +2,9 @@ import { ShoppingCart } from 'lucide-react'
 import SkeltonEffect from './SkeltonEffect'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
-import GlobalApi from '../../_utils/GlobalApi'
 import { useContext } from 'react'
 import { CartContext } from '../../_context/CartContext'
-
+import { addToCart } from '../../_services/addToCart'
 const ProductInfo = ({ product }) => {
   const { user } = useUser()
   const router = useRouter()
@@ -22,12 +21,8 @@ const ProductInfo = ({ product }) => {
           products: product?.id
         }
       }
-
-      GlobalApi.addToCart(data).then(resp => {
-        console.log(resp)
-        setChangedCart(resp)
-      }, (error) => {
-        console.log('Error', error)
+      addToCart(data).then(resp => {
+        resp && setChangedCart(resp)
       })
     }
   }

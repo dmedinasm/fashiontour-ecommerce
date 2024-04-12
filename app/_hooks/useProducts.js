@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { getMostRatedProducts } from '../_services/mostRatedProducts'
-export function useRatedProducts () {
+import { getProducts } from '../_services/products'
+export function useProducts () {
   const [productList, setProductList] = useState([])
 
   useEffect(() => {
-    getMostRatedProducts().then(res => {
+    getProducts().then(res => {
       setProductList(res)
     })
   }, [])

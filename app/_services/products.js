@@ -1,6 +1,6 @@
 import { params } from './fetchedData'
 import { apiUrl } from './fetchParams'
-export const getMostRatedProducts = async () => {
+export const getProducts = async () => {
   try {
     const res = await fetch(`${apiUrl}/products?populate=*`)
     if (!res.ok) {
@@ -9,8 +9,8 @@ export const getMostRatedProducts = async () => {
     const products = await res.json()
     const { data } = products
     const dataParams = params(data)
-    const sorted = dataParams.sort((a, b) => b.rate - a.rate)
-    return sorted
+    /* const sorted = dataParams.sort((a, b) => b.rate - a.rate) */
+    return dataParams
   } catch (error) {
     console.error(error)
   }

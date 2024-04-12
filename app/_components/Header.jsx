@@ -7,12 +7,14 @@ import { CartContext } from '../_context/CartContext'
 import GlobalApi from '../_utils/GlobalApi'
 import Cart from './Cart'
 import Link from 'next/link'
+import { useTryLogin } from '../_hooks/useTryLogin'
 const Header = () => {
-  const [isTryLogin, setIsTryLogin] = useState()
-  const { user } = useUser()
+  const { isTryLogin } = useTryLogin()
+  const { isSignedIn, user } = useUser()
   const { changedCart } = useContext(CartContext)
   const { cart, setAddToCart } = useContext(CartContext)
   const [openCart, setOpenCart] = useState(false)
+  console.log(isSignedIn)
   const getCartItems = () => {
     GlobalApi.getUserCartItems(user.primaryEmailAddress.emailAddress).then(res => {
       setAddToCart(res)
@@ -27,10 +29,6 @@ const Header = () => {
     openCart === false &&
     setOpenCart(true)
   }, [cart])
-
-  useEffect(() => {
-    setIsTryLogin(window.location.href.toString().includes('sign-in') || window.location.href.toString().includes('sign-up'))
-  }, [])
 
   return !isTryLogin && (
     <header className="bg-white shadow-sm">
@@ -65,7 +63,7 @@ const Header = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        {!user
+        {!isSignedIn
           ? <div className="sm:flex sm:gap-4">
           <a
           className="rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white shadow hover:bg-blue-600"
