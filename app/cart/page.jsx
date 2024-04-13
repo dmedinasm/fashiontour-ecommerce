@@ -1,30 +1,26 @@
 'use client'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { CartContext } from '../_context/CartContext'
-import GlobalApi from '../_utils/GlobalApi'
+import { deleteCartItem } from '../_services/deleteCartItems'
+import { Url } from '../_services/fetchParams'
 import { useRouter } from 'next/navigation'
-
+import { useUserCartItems } from '../_hooks/useUserCartItems'
+import { useUser } from '@clerk/nextjs'
+import { useTotalAmount } from '../_hooks/useTotalAmount'
+import Image from 'next/image'
 const Cart = () => {
-  const { cart } = useContext(CartContext)
   const { setChangedCart } = useContext(CartContext)
-  const [totalPrice, setTotalPrice] = useState(0)
+  const { user, isSignedIn } = useUser()
+  const { cart } = useUserCartItems({ email: user?.primaryEmailAddress?.emailAddress, isSignedIn })
+  const { totalPrice } = useTotalAmount({ cart })
   const router = useRouter()
 
-  useEffect(() => {
-    cart && getTotalAmount()
-  }, [cart])
-
-  const getTotalAmount = () => {
-    const total = cart?.reduce((acc, item) => acc + item.attributes.products.data[0].attributes.price, 0)
-    setTotalPrice(total)
-  }
-
-  const deleteCartItem_ = (id) => {
-    console.log('Deletefrom cart:', id)
-    GlobalApi.deleteCartItem(id).then(resp => {
-      setChangedCart(resp)
+  const deleteItem = (id) => {
+    deleteCartItem(id).then(res => {
+      setChangedCart(res)
     })
   }
+
   return (
 
 <section>
@@ -38,10 +34,10 @@ const Cart = () => {
         <ul className="space-y-4">
           {cart.map(item => (
             <li className="flex items-center gap-4 " key={item.id}>
-            <img
-              src={`${GlobalApi.Url}${item.attributes.products.data[0].attributes.image.data.attributes.url}`}
+            <Image
+              src={`${Url}${item.attributes.products.data[0].attributes.image.data.attributes.url}`}
               alt=""
-              className="size-16 rounded object-cover"
+              className="size-16 rounded object-cover" width={64} height={64}
             />
 
             <div>
@@ -60,7 +56,7 @@ const Cart = () => {
                 <p className='flex gap-1' ><span>$</span>{item.attributes.products.data[0].attributes.price}</p>
               </div>
 
-              <button onClick={() => deleteCartItem_(item.id)} className="text-gray-600 transition hover:text-red-600">
+              <button onClick={() => deleteItem(item.id)} className="text-gray-600 transition hover:text-red-600">
                 <span className="sr-only">Remove item</span>
 
                 <svg

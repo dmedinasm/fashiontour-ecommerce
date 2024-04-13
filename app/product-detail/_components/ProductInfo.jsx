@@ -22,7 +22,7 @@ const ProductInfo = ({ product }) => {
         }
       }
       addToCart(data).then(resp => {
-        resp && setChangedCart(resp)
+        setChangedCart(resp)
       })
     }
   }

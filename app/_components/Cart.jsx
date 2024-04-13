@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import GlobalApi from '../_utils/GlobalApi'
+import { Url } from './../_services/fetchParams'
 import Link from 'next/link'
 
 const Cart = ({ cart }) => {
@@ -12,7 +12,7 @@ const Cart = ({ cart }) => {
           cart.map((item) =>
                 <li key={item.id} className="flex items-center gap-4">
         <Image
-          src={`${GlobalApi.Url}${item.attributes.products.data[0].attributes.image.data.attributes.url}`}
+          src={`${Url}${item.attributes.products.data[0].attributes.image.data.attributes.url}`}
           alt="" width={64} height={64}
           className="rounded object-cover"
         />

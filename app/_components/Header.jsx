@@ -2,33 +2,19 @@
 import { UserButton, useUser } from '@clerk/nextjs'// Return the current user auth state
 import { ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
-import React, { useContext, useEffect, useState } from 'react'
-import { CartContext } from '../_context/CartContext'
-import GlobalApi from '../_utils/GlobalApi'
+import React from 'react'
 import Cart from './Cart'
 import Link from 'next/link'
 import { useTryLogin } from '../_hooks/useTryLogin'
+import { useUserCartItems } from '../_hooks/useUserCartItems'
+import { useOpenCart } from '../_hooks/useOpenCart'
+
 const Header = () => {
   const { isTryLogin } = useTryLogin()
   const { isSignedIn, user } = useUser()
-  const { changedCart } = useContext(CartContext)
-  const { cart, setAddToCart } = useContext(CartContext)
-  const [openCart, setOpenCart] = useState(false)
+  const { cart } = useUserCartItems({ email: user?.primaryEmailAddress?.emailAddress, isSignedIn })
+  const { openCart, setOpenCart } = useOpenCart()
   console.log(isSignedIn)
-  const getCartItems = () => {
-    GlobalApi.getUserCartItems(user.primaryEmailAddress.emailAddress).then(res => {
-      setAddToCart(res)
-    })
-  }
-
-  useEffect(() => {
-    user && getCartItems()
-  }, [user, changedCart])
-
-  useEffect(() => {
-    openCart === false &&
-    setOpenCart(true)
-  }, [cart])
 
   return !isTryLogin && (
     <header className="bg-white shadow-sm">
