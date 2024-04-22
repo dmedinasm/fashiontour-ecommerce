@@ -1,13 +1,8 @@
-import { useEffect, useState, useContext } from 'react'
-import { getUserCartItems } from '../_services/cartItems'
-import { CartContext } from '../_context/CartContext'
+import { useEffect } from 'react'
+import { useCartStore } from '../_store/cartStore'
 export function useUserCartItems ({ email, isSignedIn }) {
-  const [cart, setCart] = useState([])
-  const { changedCart } = useContext(CartContext)
+  const getCart = useCartStore(state => state.getCart)
   useEffect(() => {
-    isSignedIn && getUserCartItems(email).then(res => {
-      setCart(res)
-    })
-  }, [isSignedIn, changedCart])
-  return { cart }
+    isSignedIn && getCart(email)
+  }, [isSignedIn])
 }

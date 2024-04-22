@@ -2,13 +2,11 @@ import { ShoppingCart } from 'lucide-react'
 import SkeltonEffect from './SkeltonEffect'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
-import { useContext } from 'react'
-import { CartContext } from '../../_context/CartContext'
-import { addToCart } from '../../_services/addToCart'
+import { useCartStore } from '../../_store/cartStore'
 const ProductInfo = ({ product }) => {
   const { user } = useUser()
   const router = useRouter()
-  const { setChangedCart } = useContext(CartContext)
+  const addProductToCart = useCartStore(state => state.addProductToCart)
   const onAddToCartClick = () => {
     if (!user) {
       router.push('/sign-in')
@@ -21,9 +19,7 @@ const ProductInfo = ({ product }) => {
           products: product?.id
         }
       }
-      addToCart(data).then(resp => {
-        setChangedCart(resp)
-      })
+      addProductToCart(data)
     }
   }
   return (

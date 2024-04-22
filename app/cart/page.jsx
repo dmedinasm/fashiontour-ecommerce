@@ -1,24 +1,19 @@
 'use client'
-import React, { useContext } from 'react'
-import { CartContext } from '../_context/CartContext'
-import { deleteCartItem } from '../_services/deleteCartItems'
 import { Url } from '../_services/fetchParams'
 import { useRouter } from 'next/navigation'
-import { useUserCartItems } from '../_hooks/useUserCartItems'
-import { useUser } from '@clerk/nextjs'
 import { useTotalAmount } from '../_hooks/useTotalAmount'
 import Image from 'next/image'
+import { useCartStore } from '../_store/cartStore'
+import { useUser } from '@clerk/nextjs'
 const Cart = () => {
-  const { setChangedCart } = useContext(CartContext)
-  const { user, isSignedIn } = useUser()
-  const { cart } = useUserCartItems({ email: user?.primaryEmailAddress?.emailAddress, isSignedIn })
+  const { user } = useUser()
+  const cart = useCartStore(state => state.cart)
+  const deleteItemfromCart = useCartStore(state => state.deleteItemfromCart)
   const { totalPrice } = useTotalAmount({ cart })
   const router = useRouter()
 
   const deleteItem = (id) => {
-    deleteCartItem(id).then(res => {
-      setChangedCart(res)
-    })
+    deleteItemfromCart({ id, email: user?.primaryEmailAddress?.emailAddress })
   }
 
   return (

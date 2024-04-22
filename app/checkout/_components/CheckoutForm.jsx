@@ -4,12 +4,14 @@ import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import GlobalApi from '../../_utils/GlobalApi'
 import { useUser } from '@clerk/nextjs'
 import { CartContext } from '../../_context/CartContext'
-
+import { useCreateOrder } from '../../_hooks/useCreateOrder'
+import { useUserCartItems } from '../../_hooks/useUserCartItems'
 const CheckoutForm = ({ amount }) => {
+  const { user } = useUser()
+  const { cart } = useUserCartItems({ email: user.primaryEmailAddress.emailAddress, isSignedIn: user.isSignedIn })
+  const { createOrd } = useCreateOrder({ amount, user, cart })
   const stripe = useStripe()
   const elements = useElements()
-  const { user } = useUser()
-  const { cart, setChangedCart } = useContext(CartContext)
   const [errorMessage, setErrorMessage] = useState()
   const [loading, setLoading] = useState(false)
   console.log(cart)
@@ -33,7 +35,7 @@ const CheckoutForm = ({ amount }) => {
       handleError(submitError)
       return
     }
-    createOrder_()
+    createOrd()
     sendEmail()
     const res = await fetch('/api/create-intent', {
       method: 'POST',
@@ -59,7 +61,7 @@ const CheckoutForm = ({ amount }) => {
     // }
   }
 
-  const createOrder_ = () => {
+  /* const createOrder_ = () => {
     const productsIds = cart.map(element => {
       return element?.attributes?.products?.data[0].id
     })
@@ -84,7 +86,7 @@ const CheckoutForm = ({ amount }) => {
     }, (error) => {
       console.log('Error', error)
     })
-  }
+  } */
 
   const sendEmail = async () => {
     const res = await fetch('/api/send-email', {

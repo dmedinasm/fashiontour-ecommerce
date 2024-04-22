@@ -8,11 +8,13 @@ import Link from 'next/link'
 import { useTryLogin } from '../_hooks/useTryLogin'
 import { useUserCartItems } from '../_hooks/useUserCartItems'
 import { useOpenCart } from '../_hooks/useOpenCart'
+import { useCartStore } from '../_store/cartStore'
 
 const Header = () => {
   const { isTryLogin } = useTryLogin()
   const { isSignedIn, user } = useUser()
-  const { cart } = useUserCartItems({ email: user?.primaryEmailAddress?.emailAddress, isSignedIn })
+  const cart = useCartStore((state) => state.cart)
+  useUserCartItems({ email: user?.primaryEmailAddress?.emailAddress, isSignedIn })
   const { openCart, setOpenCart } = useOpenCart()
   console.log(isSignedIn)
 
