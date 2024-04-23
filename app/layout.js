@@ -4,8 +4,6 @@ import './globals.css'
 import Header from './_components/Header'
 import Footer from './_components/Footer'
 import { ClerkProvider } from '@clerk/nextjs'
-import { CartContext } from './_context/CartContext'
-import { useState } from 'react'
 const inter = Outfit({ subsets: ['latin'] })
 
 /* export const metadata = {
@@ -14,11 +12,8 @@ const inter = Outfit({ subsets: ['latin'] })
 } */
 
 export default function RootLayout ({ children }) {
-  const [changedCart, setChangedCart] = useState([])
-  const [cart, setAddToCart] = useState([])
   return (
     <ClerkProvider>
-      <CartContext.Provider value={{ changedCart, setChangedCart, cart, setAddToCart }}>
       <html lang="en">
       <body className={inter.className}>
         <Header/>
@@ -26,7 +21,6 @@ export default function RootLayout ({ children }) {
         <Footer/>
       </body>
     </html>
-      </CartContext.Provider>
     </ClerkProvider>
 
   )

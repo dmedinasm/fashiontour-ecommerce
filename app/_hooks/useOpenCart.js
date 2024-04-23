@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from 'react'
-import { CartContext } from '../_context/CartContext'
+import { useEffect, useState } from 'react'
+import { useCartStore } from '../_store/cartStore'
 export function useOpenCart () {
   const [openCart, setOpenCart] = useState(false)
-  const { changedCart } = useContext(CartContext)
+  const cart = useCartStore(state => state.cart)
   useEffect(() => {
     openCart === false && setOpenCart(true)
-  }, [changedCart])
+  }, [cart])
   return { openCart, setOpenCart }
 }

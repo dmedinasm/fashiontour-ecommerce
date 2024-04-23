@@ -2,7 +2,8 @@ import { create } from 'zustand'
 import { getUserCartItems } from '../_services/cartItems'
 import { addToCart } from '../_services/addToCart'
 import { deleteCartItem } from '../_services/deleteCartItems'
-export const useCartStore = create((set) => ({
+import { createOrder } from '../_services/createOrder'
+export const useCartStore = create((set, get) => ({
   cart: [],
   getCart: (email) => {
     getUserCartItems(email).then(res => {
@@ -21,6 +22,18 @@ export const useCartStore = create((set) => ({
       getUserCartItems(email).then(res => {
         set({ cart: res })
       })
+    })
+  },
+
+  createOrderFromCart: (data) => {
+    const cartItems = get().cart
+    createOrder(data).then(res => {
+      cartItems.forEach(element => {
+        deleteCartItem(element.id).then(res => {
+          console.log(res)
+        })
+      })
+      set({ cart: [] })
     })
   }
 }))

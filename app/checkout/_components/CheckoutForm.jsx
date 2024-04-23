@@ -1,15 +1,23 @@
-import React, { useContext, useState } from 'react'
-
+import React, { useState } from 'react'
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
-import GlobalApi from '../../_utils/GlobalApi'
 import { useUser } from '@clerk/nextjs'
-import { CartContext } from '../../_context/CartContext'
-import { useCreateOrder } from '../../_hooks/useCreateOrder'
-import { useUserCartItems } from '../../_hooks/useUserCartItems'
+import { useCartStore } from '../../_store/cartStore'
 const CheckoutForm = ({ amount }) => {
   const { user } = useUser()
-  const { cart } = useUserCartItems({ email: user.primaryEmailAddress.emailAddress, isSignedIn: user.isSignedIn })
-  const { createOrd } = useCreateOrder({ amount, user, cart })
+  const cart = useCartStore(state => state.cart)
+  const createOrderFromCart = useCartStore(state => state.createOrderFromCart)
+  const productsIds = cart.map(element => {
+    return element?.attributes?.products.data[0].id
+  })
+  const data = {
+    data: {
+      email: user.primaryEmailAddress.emailAddress,
+      amount,
+      userName: user.fullName,
+      products: productsIds
+    }
+  }
+
   const stripe = useStripe()
   const elements = useElements()
   const [errorMessage, setErrorMessage] = useState()
@@ -35,7 +43,8 @@ const CheckoutForm = ({ amount }) => {
       handleError(submitError)
       return
     }
-    createOrd()
+
+    createOrderFromCart(data)
     sendEmail()
     const res = await fetch('/api/create-intent', {
       method: 'POST',
