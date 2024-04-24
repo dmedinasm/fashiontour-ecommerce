@@ -8,7 +8,8 @@ export const params = (fetchedData) => {
     const image = `${Url}${product.attributes.image.data.attributes.url}`
     const id = product.id
     const rate = product.attributes.rating
-    return { title, category, description, price, image, id, rate }
+    const qty = product.attributes.quantity
+    return { title, category, description, price, image, id, rate, qty }
   })
   return data
 }
@@ -21,5 +22,6 @@ export const objectParams = (dataObject) => {
   const image = `${Url}${dataObject.attributes.image.data.attributes.url}`
   const id = dataObject.id
   const rate = dataObject.attributes.rating
-  return { title, category, description, price, image, id, rate }
+  const qty = dataObject.attributes.quantity
+  return { title, category, description, price, image, id, rate, qty }
 }

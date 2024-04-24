@@ -1,4 +1,3 @@
-'use client'
 import { Outfit } from 'next/font/google'
 import './globals.css'
 import Header from './_components/Header'
