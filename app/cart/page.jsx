@@ -4,16 +4,23 @@ import { useRouter } from 'next/navigation'
 import { useTotalAmount } from '../_hooks/useTotalAmount'
 import Image from 'next/image'
 import { useCartStore } from '../_store/cartStore'
-import { useUser } from '@clerk/nextjs'
 const Cart = () => {
-  const { user } = useUser()
   const cart = useCartStore(state => state.cart)
   const deleteItemfromCart = useCartStore(state => state.deleteItemfromCart)
+  const incrementProductCartQty = useCartStore(state => state.incrementProductCartQty)
+  const decrementProductCartQty = useCartStore(state => state.decrementProductCartQty)
   const { totalPrice } = useTotalAmount({ cart })
   const router = useRouter()
 
   const deleteItem = (id) => {
-    deleteItemfromCart({ id, email: user?.primaryEmailAddress?.emailAddress })
+    deleteItemfromCart({ id })
+  }
+
+  const incrementQty = (id) => {
+    incrementProductCartQty({ id })
+  }
+  const decrementQty = (id) => {
+    decrementProductCartQty({ id })
   }
 
   return (
@@ -48,24 +55,22 @@ const Cart = () => {
 
                   <div className="flex flex-1 items-center justify-end gap-2">
                     <div className="flex items-center gap-1 ">
-                      <button type="button" className="size-10 leading-10 text-gray-900  transition hover:opacity-75">
+                      <button onClick={() => decrementQty(item.id)} className="size-10 leading-10 text-gray-900  transition hover:opacity-75">
                         &minus;
                       </button>
-                      <input
-                        type="number"
-                        id="Quantity"
-                        value="1"
-                        className="h-10 w-16 rounded border border-gray-200 text-center [-moz-appearance:_textfield] sm:text-sm [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
-                      />
+                      <div className=" rounded border border-gray-200 text-center place-items-center px-8 py-2 "
+                      >
+                        {item.productCartQty}
+                      </div>
 
-                      <button type="button" className="size-10 leading-10 text-gray-900  transition hover:opacity-75">
+                      <button onClick={() => incrementQty(item.id)} className="size-10 leading-10 text-gray-900  transition hover:opacity-75">
                         +
                       </button>
                     </div>
 
                   <div className="flex items-center justify-end gap-2">
                     <div className='font-bold text-sm '>
-                      <p className='flex gap-1' ><span>$</span>{item.attributes.products.data[0].attributes.price}</p>
+                      <p className='flex gap-1' ><span>$</span>{(item.attributes.products.data[0].attributes.price * item.productCartQty).toFixed(2)}</p>
                     </div>
                     <button onClick={() => deleteItem(item.id)} className="text-gray-600 transition hover:text-red-600">
                       <span className="sr-only">Remove item</span>

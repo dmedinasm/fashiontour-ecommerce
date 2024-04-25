@@ -8,7 +8,7 @@ export function useTotalAmount ({ cart }) {
       return
     }
     const newCart = [...cart]
-    const total = newCart?.reduce((acc, item) => acc + item.attributes.products.data[0].attributes.price, 0).toFixed(2)
+    const total = newCart?.reduce((acc, item) => acc + (item.attributes.products.data[0].attributes.price * item.productCartQty), 0).toFixed(2)
     setTotalPrice(total)
   }, [cart])
   return { totalPrice }
