@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
-import { getProductById } from '../_services/singleProduct'
-
+import { useProductStore } from '../_store/productStore'
 export function useSingleProduct ({ id }) {
   const [productDetail, setProductDetail] = useState()
+  const products = useProductStore(state => state.products)
   useEffect(() => {
-    id && getProductById(id).then(res => {
-      setProductDetail(res)
-    })
+    const newProducts = [...products]
+    const product = newProducts.find(product => product.id == id)
+    setProductDetail(product)
   }, [id])
+
   return { productDetail }
 }

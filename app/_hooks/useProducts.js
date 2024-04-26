@@ -1,12 +1,8 @@
-import { useEffect, useState } from 'react'
-import { getProducts } from '../_services/products'
+import { useEffect } from 'react'
+import { useProductStore } from '../_store/productStore'
 export function useProducts () {
-  const [productList, setProductList] = useState([])
-
+  const getProducts = useProductStore(state => state.getProducts)
   useEffect(() => {
-    getProducts().then(res => {
-      setProductList(res)
-    })
+    getProducts()
   }, [])
-  return { productList }
 }

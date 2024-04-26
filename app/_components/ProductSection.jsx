@@ -1,13 +1,15 @@
 'use client'
 import ProductList from './ProductList'
 import { useProducts } from '../_hooks/useProducts'
+import { useProductStore } from '../_store/productStore'
 const ProductSection = () => {
-  const { productList } = useProducts()
+  useProducts()
+  const products = useProductStore(state => state.products)
 
   return (
     <div className='px-10 md:px-20 '>
       <h2 className='font-bold text-[20px] mt-12 mb-4'>Best Rated Products</h2>
-      {productList && <ProductList productList={productList} />}
+      {products && <ProductList productList={products} />}
     </div>
   )
 }
