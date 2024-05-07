@@ -1,7 +1,9 @@
+'use client'
 import Link from 'next/link'
 import React from 'react'
-
-const Breadcrumb = ({ path }) => {
+import { usePathname } from 'next/navigation'
+const Breadcrumb = () => {
+  const path = usePathname()
   return (
 <nav aria-label="Breadcrumb">
   <ol className="flex items-center gap-1 text-sm text-gray-600">

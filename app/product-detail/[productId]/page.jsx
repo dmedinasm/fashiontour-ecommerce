@@ -1,20 +1,24 @@
-'use client'
+/* 'use client' */
 import ProductBanner from '../_components/ProductBanner'
 import ProductInfo from '../_components/ProductInfo'
 import ProductList from '../../_components/ProductList'
-import { usePathname } from 'next/navigation'
+/* import { usePathname } from 'next/navigation' */
 import Breadcrumb from '../../_components/Breadcrumb'
-import { useSingleProduct } from '../../_hooks/useSingleProduct'
-import { useProductsByCategory } from '../../_hooks/useProductsByCategory'
-const ProductDetail = ({ params }) => {
-  const { productDetail } = useSingleProduct({ id: params?.productId })
-  const { similarProducts } = useProductsByCategory({ category: productDetail?.category })
-  // Use to get Url path
-  const path = usePathname()
+/* import { useSingleProduct } from '../../_hooks/useSingleProduct'
+import { useProductsByCategory } from '../../_hooks/useProductsByCategory' */
+import { getProductById } from '../../_services/singleProduct'
+import { getProductListByCategory } from '../../_services/productsByCategory'
+const ProductDetail = async ({ params }) => {
+  /* const { productDetail } = useSingleProduct({ id: params?.productId })
+  const { similarProducts } = useProductsByCategory({ category: productDetail?.category }) */
+  const productDetail = await getProductById(params?.productId)
+  const similarProducts = await getProductListByCategory(productDetail?.category)
+  /* Use to get Url path
+   const path = usePathname() */
   return (
     <div>
       <div className='py-12 px-10 sm:px-28'>
-        <Breadcrumb path={path} />
+        <Breadcrumb/>
         <div className='grid grid-cols-1 mt-10 ss:grid-cols-2 gap-10 ss:gap-0'>
           <ProductBanner product={productDetail} />
           <ProductInfo product={productDetail} />

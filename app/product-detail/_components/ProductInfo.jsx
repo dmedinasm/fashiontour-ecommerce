@@ -1,3 +1,4 @@
+'use client'
 import { ShoppingCart } from 'lucide-react'
 import SkeltonEffect from './SkeltonEffect'
 import { useRouter } from 'next/navigation'
