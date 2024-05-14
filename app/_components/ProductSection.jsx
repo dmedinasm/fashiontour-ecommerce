@@ -9,7 +9,7 @@ const ProductSection = async () => {
   const products = await getProducts()
   return (
     <div className='px-10 md:px-20 '>
-      <h2 className='font-bold text-[20px] mt-12 mb-4'>Best Rated Products</h2>
+      <h2 className='font-bold text-[30px] mt-12 mb-4'>A Sample of Our Products</h2>
       {products && <ProductList productList={products} />}
     </div>
   )

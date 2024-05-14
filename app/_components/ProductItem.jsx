@@ -7,7 +7,7 @@ const ProductItem = ({ product }) => {
   return (
 
     <Link href={`/product-detail/${product.id}`}>
-    <div className='flex flex-col justify-center items-center hover:border-blue-600 cursor-pointer border  w-full'>
+    <div className='flex flex-col justify-center items-center hover:border-blue-600 cursor-pointer border  w-full rounded-md'>
         <Image src={product.image} alt={product.title} width={200} height={200}
           className='rounded-t-lg h-[200px] object-contain'
         />

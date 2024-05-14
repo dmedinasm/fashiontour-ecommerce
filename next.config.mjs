@@ -7,8 +7,14 @@ const nextConfig = {
         hostname: 'localhost',
         port: '1337',
         pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'tailus.io',
+        pathname: '/**'
       }
     ]
+
   }
 }
 

@@ -4,7 +4,7 @@ import ProductSection from './_components/ProductSection'
 import ProductListSkeleton from './_components/ProductListSkeleton'
 export default function Home () {
   return (
-    <div>
+    <div className='mb-20'>
       <Hero/>
 
       {/* Latest Product Section */}
