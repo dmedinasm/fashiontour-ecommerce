@@ -4,7 +4,7 @@ export function useOpenCart () {
   const [openCart, setOpenCart] = useState(false)
   const cart = useCartStore(state => state.cart)
   useEffect(() => {
-    openCart === false && setOpenCart(true)
+    cart.length > 0 && setOpenCart(true)
   }, [cart])
   return { openCart, setOpenCart }
 }
