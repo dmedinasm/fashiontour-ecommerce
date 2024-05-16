@@ -9,6 +9,8 @@ import { useTryLogin } from '../_hooks/useTryLogin'
 import { useUserCartItems } from '../_hooks/useUserCartItems'
 import { useOpenCart } from '../_hooks/useOpenCart'
 import { useCartStore } from '../_store/cartStore'
+import VerticalMenu from '../_components/VerticalMenu'
+import Hamburger from '../_components/Hamburger'
 
 const Header = () => {
   const { isTryLogin } = useTryLogin()
@@ -25,7 +27,7 @@ const Header = () => {
     <div className="flex h-16 items-center justify-between">
      <Image src='/logo.svg' alt="logo main" width={82} height={40} className='w-auto h-auto'/>
 
-      <div className="hidden md:block">
+      <div className="hidden sm:block">
         <nav aria-label="Global">
           <ul className="flex items-center gap-6 text-sm">
             <li>
@@ -53,7 +55,7 @@ const Header = () => {
 
       <div className="flex items-center gap-4">
         {!isSignedIn
-          ? <div className="sm:flex sm:gap-4">
+          ? <div className="hidden ss:flex ss:gap-4">
           <a
           className="rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white shadow hover:bg-blue-600"
             href="/sign-in"
@@ -61,7 +63,7 @@ const Header = () => {
             Login
           </a>
 
-          <div className="hidden sm:flex">
+          <div className="hidden ss:flex">
             <a
               className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-primary hover:text-blue-400"
               href="/sign-up"
@@ -78,27 +80,12 @@ const Header = () => {
 
         {openCart && <Cart cart={cart}/>}
 
-        <div className="block md:hidden">
+        <div className="block sm:hidden">
           <button className="rounded relative w-10 h-10  bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75" onClick={() => setOpenMenu(!openMenu)}>
-             <div className="block w-5 h-4 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
-              <span
-                aria-hidden="true"
-                className={`block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out ${openMenu ? 'rotate-45 translate-y-[9px] top-[40%]' : ''}`}
-                style={{ top: '0', left: '0' }}
-              ></span>
-              <span
-                aria-hidden="true"
-                className={`block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out ${openMenu ? 'opacity-0' : ''}`}
-                style={{ top: '50%', left: '0', transform: 'translateY(-50%)' }}
-              ></span>
-              <span
-                aria-hidden="true"
-                className={`block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out ${openMenu ? '-rotate-45 translate-y-[50%] top-1/2' : ''}`}
-                style={{ bottom: '0', left: '0' }}
-              ></span>
-            </div>
+          <Hamburger isOpen={openMenu} />
           </button>
         </div>
+        {<VerticalMenu isOpen={openMenu} />}
       </div>
     </div>
   </div>
