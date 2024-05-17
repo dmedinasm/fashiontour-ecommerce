@@ -9,7 +9,6 @@ export const getProducts = async () => {
     const products = await res.json()
     const { data } = products
     const dataParams = params(data)
-    /* const sorted = dataParams.sort((a, b) => b.rate - a.rate) */
     return dataParams
   } catch (error) {
     console.error(error)
