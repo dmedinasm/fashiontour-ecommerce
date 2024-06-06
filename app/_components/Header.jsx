@@ -29,7 +29,7 @@ const Header = () => {
 
       <div className="hidden sm:block">
         <nav aria-label="Global">
-          <ul className="flex items-center gap-6 text-sm">
+          <ul className="flex items-center gap-6 text-md">
             <li>
               <Link className="text-gray-500 transition hover:text-gray-500/75" href={'/'}> Home </Link>
             </li>
