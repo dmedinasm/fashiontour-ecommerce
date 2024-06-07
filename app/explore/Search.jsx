@@ -1,20 +1,24 @@
 'use client'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
+import { useDebouncedCallback } from 'use-debounce'
 
+const WAIT_BETWEEN_KEY_PRESSES = 500
 function Search () {
   const searchParams = useSearchParams()
   const params = new URLSearchParams(searchParams)
   const pathname = usePathname()
   const { replace } = useRouter()
-  const handleSearch = (term) => {
+
+  const handleSearch = useDebouncedCallback((term) => {
     if (term) {
       params.set('query', term)
     } else {
       params.delete('query')
     }
     replace(`${pathname}?${params.toString()}`)
-  }
+  }, WAIT_BETWEEN_KEY_PRESSES)
+
   return (
     <div className="relative mt-6 max-w-lg mx-auto">
       <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
