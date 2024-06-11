@@ -3,8 +3,12 @@ import { getUserCartItems } from '../_services/cartItems'
 import { addToCart } from '../_services/addToCart'
 import { deleteCartItem } from '../_services/deleteCartItems'
 import { createOrder } from '../_services/createOrder'
+import { toast } from 'sonner'
+
 export const useCartStore = create((set, get) => ({
   cart: [],
+  loading: false,
+  error: null,
   getCart: (email) => {
     getUserCartItems(email).then(res => {
       const newRes = structuredClone(res)
@@ -15,16 +19,25 @@ export const useCartStore = create((set, get) => ({
     })
   },
   addProductToCart: (data) => {
-    addToCart(data).then(res => {
-      const idCartProductAdded = res.data.id
-      getUserCartItems(data.data.email).then(res => {
-        const newCartProduct = res.find(element => element.id === idCartProductAdded)
-        newCartProduct.productCartQty = 1
-        const cartItems = get().cart
-        const newCartItems = [...cartItems, newCartProduct]
-        set({ cart: newCartItems })
+    set({ loading: true })
+    addToCart(data)
+      .then(res => {
+        const idCartProductAdded = res.data.id
+        getUserCartItems(data.data.email).then(res => {
+          const newCartProduct = res.find(element => element.id === idCartProductAdded)
+          newCartProduct.productCartQty = 1
+          const cartItems = get().cart
+          const newCartItems = [...cartItems, newCartProduct]
+          set({ error: null })
+          set({ cart: newCartItems })
+          toast.success('Product added to cart')
+        })
       })
-    })
+      .catch(err => {
+        set({ error: err })
+        toast.error(`Error adding product to cart: ${err.message}`)
+      })
+      .finally(() => set({ loading: false }))
   },
   deleteItemfromCart: ({ id }) => {
     deleteCartItem(id).then(res => {
