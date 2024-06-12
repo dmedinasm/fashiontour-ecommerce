@@ -1,11 +1,6 @@
-/* 'use client' */
 import ProductList from './ProductList'
-/* import { useProducts } from '../_hooks/useProducts'
-import { useProductStore } from '../_store/productStore' */
 import { getProducts } from '../_services/products'
 const ProductSection = async () => {
-  /* useProducts()
-  const products = useProductStore(state => state.products) */
   const products = await getProducts()
   return (
     <div className='px-10 md:px-20 '>

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useTotalAmount } from '../_hooks/useTotalAmount'
 import Image from 'next/image'
 import { useCartStore } from '../_store/cartStore'
+import { Toaster } from 'sonner'
 const Cart = () => {
   const cart = useCartStore(state => state.cart)
   const deleteItemfromCart = useCartStore(state => state.deleteItemfromCart)
@@ -24,8 +25,8 @@ const Cart = () => {
   }
 
   return (
-
     <section>
+      <Toaster richColors position='top-center' />
       <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
         <div className="mx-auto max-w-3xl">
           <header className="text-center">

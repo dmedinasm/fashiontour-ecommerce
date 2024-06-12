@@ -40,13 +40,20 @@ export const useCartStore = create((set, get) => ({
       .finally(() => set({ loading: false }))
   },
   deleteItemfromCart: ({ id }) => {
-    deleteCartItem(id).then(res => {
-      console.log(res)
-      const idProductDeleted = res.data.id
-      const cartItems = get().cart
-      const newCartItems = cartItems.filter(element => element.id !== idProductDeleted)
-      set({ cart: newCartItems })
-    })
+    set({ loading: true })
+    deleteCartItem(id)
+      .then(res => {
+        console.log(res)
+        const idProductDeleted = res.data.id
+        const cartItems = get().cart
+        const newCartItems = cartItems.filter(element => element.id !== idProductDeleted)
+        set({ cart: newCartItems })
+        toast.success('Product removed from cart')
+      })
+      .catch((err) => {
+        toast.error(`Error deleting product from cart: ${err.message}`)
+      })
+      .finally(() => set({ loading: false }))
   },
 
   createOrderFromCart: (data) => {
