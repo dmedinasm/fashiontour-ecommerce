@@ -25,7 +25,7 @@ const Header = () => {
     <header className="bg-white shadow-sm">
   <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
     <div className="flex h-16 items-center justify-between">
-     <Image src='/logo.svg' alt="logo main" width={82} height={40} className='w-auto h-auto'/>
+     <Image src='/logo.png' alt="logo main" width={50} height={50} className='w-auto h-auto'/>
 
       <div className="hidden sm:block">
         <nav aria-label="Global">

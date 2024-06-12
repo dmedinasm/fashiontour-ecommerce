@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useUser } from '@clerk/nextjs'
 import { useCartStore } from '../../_store/cartStore'
+
 const CheckoutForm = ({ amount }) => {
   const { user } = useUser()
   const cart = useCartStore(state => state.cart)
@@ -70,33 +71,6 @@ const CheckoutForm = ({ amount }) => {
     // }
   }
 
-  /* const createOrder_ = () => {
-    const productsIds = cart.map(element => {
-      return element?.attributes?.products?.data[0].id
-    })
-    const data = {
-      data: {
-        email: user.primaryEmailAddress.emailAddress,
-        amount,
-        userName: user.fullName,
-        products: productsIds
-      }
-    }
-
-    GlobalApi.createOrder(data).then(resp => {
-      if (resp) {
-        cart.forEach(element => {
-          GlobalApi.deleteCartItem(element.id).then(resp => {
-            console.log(resp)
-          })
-        })
-        setChangedCart(resp)
-      }
-    }, (error) => {
-      console.log('Error', error)
-    })
-  } */
-
   const sendEmail = async () => {
     const res = await fetch('/api/send-email', {
       method: 'POST',
@@ -113,7 +87,7 @@ const CheckoutForm = ({ amount }) => {
   return (
     <form onSubmit={handleSubmit}>
         <div className='px-32 sm:mx-[250px] mt-20'>
-        <PaymentElement/>
+           <PaymentElement/>
         <button type="submit" disabled={loading || !stripe || !elements} className='bg-primary text-white p-2 rounded-md w-full mt-8 hover:bg-blue-700'>Submit</button>
         {errorMessage && <div className='mt-12 text-red-500'>{errorMessage}</div>}
         </div>

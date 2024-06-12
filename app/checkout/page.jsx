@@ -16,9 +16,11 @@ const Checkout = () => {
   }
 
   return (
-    <Elements stripe={stripePromise} options={options} >
+    <div className='my-40'>
+      <Elements stripe={stripePromise} options={options} >
       <CheckoutForm amount={searchParams.get('amount')} />
     </Elements>
+    </div>
   )
 }
 

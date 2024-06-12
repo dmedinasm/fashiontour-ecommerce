@@ -48,12 +48,11 @@ const Footer = () => {
           fill="currentColor"
         />
       </svg> */}
-      <Image src='./logo.svg' alt="logo footer" width={80} height={90} />
+      <Image src='/logo.png' alt="logo footer" width={150} height={150} />
     </div>
 
     <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500">
-      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt consequuntur amet culpa cum
-      itaque neque.
+    Style that sparks your creativity, shopping that brings you joy.
     </p>
 
     <ul className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-12">

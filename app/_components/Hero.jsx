@@ -1,10 +1,14 @@
+import Image from 'next/image'
 import React from 'react'
 
 const Hero = () => {
   return (
-    <section className="bg-gray-50">
-  <div className="mx-auto max-w-screen-xl px-4 py-24 lg:flex lg:h-screen ">
+    <section className="bg-gray-50 flex flex-col items-center justify-center">
+        <Image src='/logo.png' alt='logo hero' width={200} height={200} className='mt-28' />
+  <div className="mx-auto max-w-screen-xl px-4 py-14 lg:flex lg:h-screen ">
+
     <div className="mx-auto max-w-xl text-center">
+
       <h1 className="text-3xl font-extrabold sm:text-5xl">
         <span className="text-primary">Fashion Tour</span> A Marketplace
         for Fashion Lovers
