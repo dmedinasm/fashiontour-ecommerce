@@ -16,7 +16,7 @@ const Hero = () => {
       </h1>
 
       <p className="mt-4 sm:text-xl/relaxed">
-       Now get free discount code  for all of our products.
+      Browse our catalog and discover everything you are looking for.
       </p>
 
       <div className="mt-8 flex flex-wrap justify-center gap-4">

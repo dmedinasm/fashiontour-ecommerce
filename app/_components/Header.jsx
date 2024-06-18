@@ -85,7 +85,7 @@ const Header = () => {
           <Hamburger isOpen={openMenu} />
           </button>
         </div>
-        {<VerticalMenu isOpen={openMenu} />}
+        {<VerticalMenu isOpen={openMenu} toggle={setOpenMenu}/>}
       </div>
     </div>
   </div>
