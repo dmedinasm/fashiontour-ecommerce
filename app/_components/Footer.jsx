@@ -8,7 +8,7 @@ const Footer = () => {
   <div className="mx-auto max-w-5xl px-4 py-16 ss:px-6 lg:px-8">
     <div className="flex justify-center text-teal-600">
 
-      <Image src='/logo.png' alt="logo footer" width={150} height={150} />
+      <Link href="/"><Image src='/logo.png' alt="logo footer" width={150} height={150} /></Link>
     </div>
 
     <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500">

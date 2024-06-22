@@ -86,7 +86,7 @@ const CheckoutForm = ({ amount }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-        <div className='px-32 sm:mx-[250px] mt-20'>
+        <div className='p-8 ss:px-32  mt-20'>
            <PaymentElement/>
         <button type="submit" disabled={loading || !stripe || !elements} className='bg-primary text-white p-2 rounded-md w-full mt-8 hover:bg-blue-700'>Submit</button>
         {errorMessage && <div className='mt-12 text-red-500'>{errorMessage}</div>}
