@@ -1,8 +1,46 @@
+'use client'
 import React from 'react'
-
+import { Toaster, toast } from 'sonner'
 function Contact () {
+  
+  const sendContactEmail = async ({name, message, email}) => {
+    try {
+      const res = await fetch('/api/send-emailcontact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          message
+        })
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok && data?.error === null) {
+        return { success: true, message: toast.success('Message sent') };
+      } else {
+        return { success: false, message: toast.error('Error sending message') + data.error };
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      return { success: false, message: toast.error('Error sending message') };
+    }
+  }
+  const handleSubmit = (event) =>{
+    event.preventDefault()
+    const form = event.target
+    const formData = new FormData(form)
+    const name = formData.get('name')
+    const email = formData.get('email')
+    const message = formData.get('message')
+    sendContactEmail({name, email, message})
+  }
   return (
     <section >
+      <Toaster richColors position='top-center'/>
     <div className="relative flex items-top justify-center min-h-screen bg-white  sm:items-center sm:pt-0">
       <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
         <div className="mt-8 overflow-hidden">
@@ -44,7 +82,7 @@ function Contact () {
               </div>
             </div>
 
-            <form className="p-6 flex flex-col justify-center">
+            <form onSubmit={handleSubmit} className="p-6 flex flex-col justify-center">
               <div className="flex flex-col">
                 <label htmlFor="name" className="hidden">Full Name</label>
                 <input type="name" name="name" id="name" placeholder="Full Name" className="w-100 mt-2 py-3 px-3 rounded-lg bg-white  border border-gray-400  text-gray-800 font-semibold focus:border-indigo-500 focus:outline-none"/>
@@ -56,8 +94,8 @@ function Contact () {
               </div>
 
               <div className="flex flex-col mt-2">
-                <label htmlFor="tel" className="hidden">Number</label>
-                <input type="tel" name="tel" id="tel" placeholder="Telephone Number" className="w-100 mt-2 py-3 px-3 rounded-lg bg-white  border border-gray-400  text-gray-800 font-semibold focus:border-indigo-500 focus:outline-none"/>
+                <label htmlFor="text" className="hidden">Number</label>
+                <textarea rows="6" cols="5" type="text" name="message" id="text" placeholder="Message" className="w-100 mt-2 py-3 px-3 rounded-lg bg-white  border border-gray-400  text-gray-800 font-semibold focus:border-indigo-500 focus:outline-none  resize-none"/>
               </div>
 
               <button type="submit" className="md:w-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg mt-3  transition ease-in-out duration-300">
