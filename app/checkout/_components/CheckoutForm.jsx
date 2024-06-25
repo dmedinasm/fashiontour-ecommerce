@@ -12,9 +12,9 @@ const CheckoutForm = ({ amount }) => {
   })
   const data = {
     data: {
-      email: user.primaryEmailAddress.emailAddress,
+      email: user?.primaryEmailAddress.emailAddress,
       amount,
-      userName: user.fullName,
+      userName: user?.fullName,
       products: productsIds
     }
   }
@@ -33,7 +33,7 @@ const CheckoutForm = ({ amount }) => {
     // We don't want to let default form submission happen here,
     // which would refresh the page.
     event.preventDefault()
-
+    setLoading(true)
     if (!stripe || !elements) {
       // Stripe.js hasn't yet loaded.
       // Make sure to disable form submission until Stripe.js has loaded.
@@ -76,18 +76,19 @@ const CheckoutForm = ({ amount }) => {
       method: 'POST',
       body: JSON.stringify({
         amount,
-        email: user.primaryEmailAddress.emailAddress,
-        fullName: user.fullName
+        email: user?.primaryEmailAddress.emailAddress,
+        fullName: user?.fullName
       })
     })
     const data = await res.json()
+  setLoading(false)
   }
 
   return (
     <form onSubmit={handleSubmit}>
-        <div className='p-8 ss:px-32  mt-20'>
+        <div className='p-8 md:px-52  mt-20'>
            <PaymentElement/>
-        <button type="submit" disabled={loading || !stripe || !elements} className='bg-primary text-white p-2 rounded-md w-full mt-8 hover:bg-blue-700'>Submit</button>
+        <button type="submit" disabled={loading || !stripe || !elements} className='bg-primary text-white p-2 rounded-md w-full mt-8 hover:bg-blue-700'>{loading ? 'Paying...' : 'Submit'}</button>
         {errorMessage && <div className='mt-12 text-red-500'>{errorMessage}</div>}
         </div>
 
