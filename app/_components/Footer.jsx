@@ -1,9 +1,12 @@
+'use client'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { useTryLogin } from '../_hooks/useTryLogin'
 
 const Footer = () => {
-  return (
+  const {isTryLogin} = useTryLogin()
+  return !isTryLogin && (
     <footer className="bg-gray-100">
   <div className="mx-auto max-w-5xl px-4 py-16 ss:px-6 lg:px-8">
     <div className="flex justify-center text-teal-600">

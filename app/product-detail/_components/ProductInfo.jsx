@@ -7,7 +7,7 @@ import { useCartStore } from '../../_store/cartStore'
 import { Toaster } from 'sonner'
 
 const ProductInfo = ({ product }) => {
-  const { user } = useUser()
+  const { user, isSignedIn } = useUser()
   const router = useRouter()
   const cart = useCartStore(state => state.cart)
   const loading = useCartStore(state => state.loading)
@@ -16,7 +16,7 @@ const ProductInfo = ({ product }) => {
   const addProductToCart = useCartStore(state => state.addProductToCart)
   const onAddToCartClick = (event) => {
     if (!user) {
-      router.push('/sign-in')
+      window.location.href = '/sign-in'
     } else {
       if (!loading) {
         event.target.disabled = true
@@ -34,7 +34,7 @@ const ProductInfo = ({ product }) => {
   }
   return (
     <div >
-      <Toaster richColors position='top-center'/>
+      <Toaster richColors position='top-center' />
       {product
         ? <div>
           <h2 className='text-[20px] '>{product?.title}</h2>
@@ -46,16 +46,16 @@ const ProductInfo = ({ product }) => {
           }
           <h2 className='text-[30px] text-primary font-medium mt-5'>${product?.price}</h2>
           <button className='flex gap-2 py-3 hover:bg-blue-700 cursor-pointer px-10 text-white bg-primary rounded-lg mt-5'
-           disabled = {error ? false : product.qty === 0 || cart.some(item => item.attributes.products.data[0].id === product.id)}
-          onClick={(event) => onAddToCartClick(event)}>
+            disabled={error || !isSignedIn ? false : product.qty === 0 || cart.some(item => item.attributes.products.data[0].id === product.id)}
+            onClick={(event) => onAddToCartClick(event)}>
             <ShoppingCart />
             {loading ? 'Adding...' : 'Add to Cart'}
           </button>
         </div>
-        : <SkeltonEffect/>
+        : <SkeltonEffect />
       }
 
-        </div>
+    </div>
 
   )
 }

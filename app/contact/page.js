@@ -1,10 +1,10 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { Toaster, toast } from 'sonner'
 function Contact () {
-  
+  const [buttonLoad, setButtonLoad] = useState(false) 
   const sendContactEmail = async ({name, message, email}) => {
-    try {
+    setButtonLoad(true)
       const res = await fetch('/api/send-emailcontact', {
         method: 'POST',
         headers: {
@@ -18,16 +18,13 @@ function Contact () {
       });
       
       const data = await res.json();
-      
+      setButtonLoad(false)
       if (res.ok && data?.error === null) {
         return { success: true, message: toast.success('Message sent') };
       } else {
         return { success: false, message: toast.error('Error sending message') + data.error };
       }
-    } catch (error) {
-      console.error("Error:", error);
-      return { success: false, message: toast.error('Error sending message') };
-    }
+    
   }
   const handleSubmit = (event) =>{
     event.preventDefault()
@@ -99,7 +96,7 @@ function Contact () {
               </div>
 
               <button type="submit" className="md:w-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg mt-3  transition ease-in-out duration-300">
-                Submit
+                {buttonLoad ? 'Sending...' : 'Submit'}
               </button>
             </form>
           </div>

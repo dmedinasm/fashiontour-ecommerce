@@ -19,7 +19,6 @@ const Header = () => {
   const cart = useCartStore((state) => state.cart)
   useUserCartItems({ email: user?.primaryEmailAddress?.emailAddress, isSignedIn })
   const { openCart, setOpenCart } = useOpenCart()
-  console.log(isSignedIn)
 
   return !isTryLogin && (
     <header className="bg-white shadow-sm">

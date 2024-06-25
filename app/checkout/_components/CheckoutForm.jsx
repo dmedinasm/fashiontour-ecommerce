@@ -81,7 +81,6 @@ const CheckoutForm = ({ amount }) => {
       })
     })
     const data = await res.json()
-    console.log(data)
   }
 
   return (
