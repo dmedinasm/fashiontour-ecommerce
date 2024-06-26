@@ -8,7 +8,6 @@ async function Products ({ query }) {
     product.title.toLowerCase().includes(query.toLowerCase()) ||
     product.category.toLowerCase().includes(query.toLowerCase())
   )
-  console.log(searchedProducts)
   return (
     <>
       { searchedProducts.length > 0

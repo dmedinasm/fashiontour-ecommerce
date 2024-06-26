@@ -82,17 +82,17 @@ function Contact () {
             <form onSubmit={handleSubmit} className="p-6 flex flex-col justify-center">
               <div className="flex flex-col">
                 <label htmlFor="name" className="hidden">Full Name</label>
-                <input type="name" name="name" id="name" placeholder="Full Name" className="w-100 mt-2 py-3 px-3 rounded-lg bg-white  border border-gray-400  text-gray-800 font-semibold focus:border-indigo-500 focus:outline-none"/>
+                <input type="name" name="name" id="name" placeholder="Full Name" className="w-100 mt-2 py-3 px-3 rounded-lg bg-white  border border-gray-400  text-gray-800 font-semibold focus:border-indigo-500 focus:outline-none" />
               </div>
 
               <div className="flex flex-col mt-2">
                 <label htmlFor="email" className="hidden">Email</label>
-                <input type="email" name="email" id="email" placeholder="Email" className="w-100 mt-2 py-3 px-3 rounded-lg bg-white  border border-gray-400  text-gray-800 font-semibold focus:border-indigo-500 focus:outline-none"/>
+                <input type="email" name="email" id="email" placeholder="Email" className="w-100 mt-2 py-3 px-3 rounded-lg bg-white  border border-gray-400  text-gray-800 font-semibold focus:border-indigo-500 focus:outline-none" required/>
               </div>
 
               <div className="flex flex-col mt-2">
                 <label htmlFor="text" className="hidden">Number</label>
-                <textarea rows="6" cols="5" type="text" name="message" id="text" placeholder="Message" className="w-100 mt-2 py-3 px-3 rounded-lg bg-white  border border-gray-400  text-gray-800 font-semibold focus:border-indigo-500 focus:outline-none  resize-none"/>
+                <textarea rows="6" cols="5" type="text" name="message" id="text" placeholder="Message" className="w-100 mt-2 py-3 px-3 rounded-lg bg-white  border border-gray-400  text-gray-800 font-semibold focus:border-indigo-500 focus:outline-none  resize-none" required/>
               </div>
 
               <button type="submit" className="md:w-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg mt-3  transition ease-in-out duration-300">
