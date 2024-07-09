@@ -6,7 +6,7 @@ export function useOpenCart () {
   const [openCart, setOpenCart] = useState(false)
   const cart = useCartStore(state => state.cart)
   useEffect(() => {
-    isSignedIn && setOpenCart(true)
+    isSignedIn ? setOpenCart(true) : setOpenCart(false)
   }, [cart, isSignedIn])
   return { openCart, setOpenCart }
 }
