@@ -5,7 +5,7 @@ import React from 'react'
 import { useTryLogin } from '../_hooks/useTryLogin'
 
 const Footer = () => {
-  const {isTryLogin} = useTryLogin()
+  const { isTryLogin } = useTryLogin()
   return !isTryLogin && (
     <footer className="bg-gray-100">
   <div className="mx-auto max-w-5xl px-4 py-16 ss:px-6 lg:px-8">
@@ -32,16 +32,14 @@ const Footer = () => {
       </li>
 
       <li>
-        <Link className="text-gray-700 transition hover:text-gray-700/75" href="#"> History </Link>
+        <Link className="text-gray-700 transition hover:text-gray-700/75" href="/"> Home</Link>
       </li>
     </ul>
 
     <ul className="mt-12 flex justify-center gap-6 md:gap-8">
       <li>
-      <a
+      <Link
           href="#"
-          rel="noreferrer"
-          target="_blank"
           className="text-gray-700 transition hover:text-gray-700/75"
         >
           <span className="sr-only">Facebook</span>
@@ -52,26 +50,22 @@ const Footer = () => {
               clipRule="evenodd"
             />
           </svg>
-          </a>
+          </Link>
       </li>
           <li>
-            <a
+            <Link
               href="#"
-              rel="noreferrer"
-              target="_blank"
               className="text-gray-700 transition hover:text-gray-700/75"
             >
 
               <svg className='h-6 w-6 mt-1' fill="currentColor" viewBox="0 0 24 24" aria-hidden='true'>
                 <path fillRule='evenodd' d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" clipRule='evenodd' />
               </svg>
-            </a>
+            </Link>
           </li>
       <li>
-        <a
+        <Link
           href="#"
-          rel="noreferrer"
-          target="_blank"
           className="text-gray-700 transition hover:text-gray-700/75"
         >
           <span className="sr-only">Instagram</span>
@@ -82,14 +76,12 @@ const Footer = () => {
               clipRule="evenodd"
             />
           </svg>
-        </a>
+        </Link>
       </li>
 
       <li>
-        <a
+        <Link
           href="#"
-          rel="noreferrer"
-          target="_blank"
           className="text-gray-700 transition hover:text-gray-700/75"
         >
           <span className="sr-only">GitHub</span>
@@ -100,7 +92,7 @@ const Footer = () => {
               clipRule="evenodd"
             />
           </svg>
-        </a>
+        </Link>
       </li>
     </ul>
   </div>

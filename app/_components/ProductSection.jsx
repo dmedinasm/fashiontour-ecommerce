@@ -1,5 +1,6 @@
 import ProductList from './ProductList'
 import { getProducts } from '../_services/products'
+
 const ProductSection = async () => {
   const products = await getProducts()
   return (

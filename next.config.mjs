@@ -17,6 +17,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com',
         pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'distant-lane-dmedinadev-0769eb58.koyeb.app',
+        pathname: '/**'
       }
     ]
 

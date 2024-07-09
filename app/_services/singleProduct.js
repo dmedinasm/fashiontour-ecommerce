@@ -1,8 +1,13 @@
 import { objectParams } from './fetchedData'
-import { apiUrl } from './fetchParams'
+import { apiKey, apiUrl } from './fetchParams'
 export const getProductById = async (id) => {
   try {
-    const res = await fetch(`${apiUrl}/products/${id}?populate=*`)
+    const res = await fetch(`${apiUrl}/products/${id}?populate=*`, {
+      headers: {
+        method: 'GET',
+        Authorization: `Bearer ${apiKey}`
+      }
+    })
     if (!res.ok) {
       throw new Error('Failed to fetch data')
     }
