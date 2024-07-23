@@ -20,9 +20,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'distant-lane-dmedinadev-0769eb58.koyeb.app',
+        hostname: 'fakestoreapi.com',
         pathname: '/**'
       }
+
     ]
 
   },
