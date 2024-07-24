@@ -40,13 +40,13 @@ const ProductInfo = ({ product }) => {
           <h2 className='text-[20px] '>{product?.title}</h2>
           <h2 className='text-[15px] text-gray-500'>{product?.category}</h2>
           <h2 className='text-[15px] text-gray-700 mt-5'>{product?.description}</h2>
-          {product?.qty > 0
+          {product?.quantity > 0
             ? <span className="whitespace-nowrap rounded-full bg-green-100 px-2.5 py-0.5 text-md inline-block  text-green-700 mt-5 border-[2px] border-green-300 border-solid"> In Stock </span>
             : <span className="whitespace-nowrap rounded-full bg-red-100 px-2.5 py-0.5 text-md inline-block  text-red-700 mt-5 border-[2px] border-red-300 border-solid"> Out of Stock </span>
           }
           <h2 className='text-[30px] text-primary font-medium mt-5'>${product?.price}</h2>
           <button className='flex gap-2 py-3 hover:bg-blue-700 cursor-pointer px-10 text-white bg-primary rounded-lg mt-5'
-            disabled={error || !isSignedIn ? false : product.qty === 0 || cart.some(item => item.attributes.products.data[0].id === product.id)}
+            disabled={error || !isSignedIn ? false : product.quantity === 0 || cart.some(item => item.attributes.products.data[0].id === product.id)}
             onClick={(event) => onAddToCartClick(event)}>
             <ShoppingCart />
             {loading ? 'Adding...' : 'Add to Cart'}

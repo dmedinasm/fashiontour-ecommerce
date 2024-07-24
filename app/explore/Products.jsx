@@ -1,6 +1,6 @@
 import React from 'react'
 import ProductItem from '../_components/ProductItem'
-import { getProducts } from '../_services/products'
+import { getProducts } from '../lib/data'
 
 async function Products ({ query }) {
   const products = await getProducts()

@@ -4,17 +4,11 @@ import ProductInfo from '../_components/ProductInfo'
 import ProductList from '../../_components/ProductList'
 /* import { usePathname } from 'next/navigation' */
 import Breadcrumb from '../../_components/Breadcrumb'
-/* import { useSingleProduct } from '../../_hooks/useSingleProduct'
-import { useProductsByCategory } from '../../_hooks/useProductsByCategory' */
-import { getProductById } from '../../_services/singleProduct'
-import { getProductListByCategory } from '../../_services/productsByCategory'
+import { getProductById, getProductByCategory } from '../../lib/data'
 const ProductDetail = async ({ params }) => {
-  /* const { productDetail } = useSingleProduct({ id: params?.productId })
-  const { similarProducts } = useProductsByCategory({ category: productDetail?.category }) */
   const productDetail = await getProductById(params?.productId)
-  const similarProducts = await getProductListByCategory(productDetail?.category)
-  /* Use to get Url path
-   const path = usePathname() */
+  const similarProducts = await getProductByCategory(productDetail?.category)
+
   return (
     <div>
       <div className='py-12 px-10 sm:px-28'>
