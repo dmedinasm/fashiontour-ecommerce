@@ -41,8 +41,11 @@ export const getProductByCategory = async (paramCategory) => {
 }
 
 export async function createCartWithProduct (userName, email, productId, quantity = 1) {
-  const result = await prisma.cart.create({
-    data: {
+  const result = await prisma.cart.upsert({
+    where: {
+      email
+    },
+    create: {
       userName,
       email,
       products: {
@@ -53,7 +56,40 @@ export async function createCartWithProduct (userName, email, productId, quantit
           quantity
         }
       }
+    },
+    update: {
+      products: {
+        create: {
+          product: {
+            connect: { id: productId }
+          },
+          quantity
+        }
+      }
+    },
+    include: {
+      products: {
+        include: {
+          product: true
+        }
+      }
     }
   })
   return result
+}
+
+export async function getCartItems (email) {
+  const cartItems = await prisma.cart.findFirst({
+    where: {
+      email
+    },
+    include: {
+      products: {
+        include: {
+          product: true
+        }
+      }
+    }
+  })
+  return cartItems
 }

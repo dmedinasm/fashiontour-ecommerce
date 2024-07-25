@@ -1,5 +1,5 @@
 'use client'
-import { Url } from '../_services/fetchParams'
+/* import { Url } from '../_services/fetchParams' */
 import { useRouter } from 'next/navigation'
 import { useTotalAmount } from '../_hooks/useTotalAmount'
 import Image from 'next/image'
@@ -36,19 +36,19 @@ const Cart = () => {
           <div className="mt-8">
             <ul className="space-y-4">
               {cart.map(item => (
-                <li className="flex flex-col xs:flex-row items-center my-12 text-center xs:text-left xs:my-0 gap-4 " key={item.id}>
+                <li className="flex flex-col xs:flex-row items-center my-12 text-center xs:text-left xs:my-0 gap-4 " key={item.product.id}>
                   <Image
-                    src={`${Url}${item.attributes.products.data[0].attributes.image.data.attributes.url}`}
+                    src={item.product.image}
                     alt=""
                     className="size-16 rounded object-cover" width={64} height={64}
                   />
 
                   <div >
-                    <h3 className="text-sm font-bold line-clamp-2">{item.attributes.products.data[0].attributes.title}</h3>
+                    <h3 className="text-sm font-bold line-clamp-2">{item.product.title}</h3>
 
                     <dl className="mt-0.5 space-y-px text-[10px] text-gray-600">
                       <div>
-                        <dt className="inline text-gray-950 mr-2">{item.attributes.products.data[0].attributes.category}</dt>
+                        <dt className="inline text-gray-950 mr-2">{item.product.category}</dt>
                       </div>
 
                     </dl>
@@ -56,24 +56,24 @@ const Cart = () => {
 
                   <div className="flex  flex-1 items-center justify-end gap-2">
                     <div className="flex items-center gap-1 ">
-                      <button onClick={() => decrementQty(item.id)} className="size-10 leading-10 text-gray-900  transition hover:opacity-75">
+                      <button onClick={() => decrementQty(item.product.id)} className="size-10 leading-10 text-gray-900  transition hover:opacity-75">
                         &minus;
                       </button>
                       <div className=" rounded border border-gray-200 text-center place-items-center px-8 py-2 "
                       >
-                        {item.productCartQty}
+                        {item.quantity}
                       </div>
 
-                      <button onClick={() => incrementQty(item.id)} className="size-10 leading-10 text-gray-900  transition hover:opacity-75">
+                      <button onClick={() => incrementQty(item.product.id)} className="size-10 leading-10 text-gray-900  transition hover:opacity-75">
                         +
                       </button>
                     </div>
 
                     <div className="flex items-center justify-end gap-2">
                       <div className='font-bold text-sm '>
-                        <p className='flex gap-1' ><span>$</span>{(item.attributes.products.data[0].attributes.price * item.productCartQty).toFixed(2)}</p>
+                        <p className='flex gap-1' ><span>$</span>{(item.product.price * item.quantity).toFixed(2)}</p>
                       </div>
-                      <button onClick={() => deleteItem(item.id)} className="text-gray-600 transition hover:text-red-600">
+                      <button onClick={() => deleteItem(item.product.id)} className="text-gray-600 transition hover:text-red-600">
                         <span className="sr-only">Remove item</span>
 
                         <svg

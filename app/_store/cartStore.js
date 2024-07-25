@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { getUserCartItems } from '../_services/cartItems'
+/* import { getUserCartItems } from '../_services/cartItems' */
 import { deleteCartItem } from '../_services/deleteCartItems'
 import { createOrder } from '../_services/createOrder'
 import { toast } from 'sonner'
@@ -9,13 +9,21 @@ export const useCartStore = create((set, get) => ({
   loading: false,
   error: null,
   getCart: (email) => {
-    getUserCartItems(email).then(res => {
-      const newRes = structuredClone(res)
-      const products = newRes.map(element => {
-        return { ...element, productCartQty: 1 }
+    fetch('/api/getcart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email
       })
-      set({ cart: products })
     })
+      .then(response => response.json())
+      .then((data) => {
+        const { products } = data
+        set({ cart: products })
+      })
+      .catch((error) => console.error('Error:', error))
   },
   addProductToCart: (userName, email, id) => {
     /* set({ loading: true }) */
@@ -31,7 +39,13 @@ export const useCartStore = create((set, get) => ({
       })
     })
       .then(response => response.json())
-      .then(data => console.log(data))
+      .then((data) => {
+        const { products } = data
+        console.log(products)
+        /* const cartItems = get().cart
+        const newCartItems = [...cartItems, product] */
+        set({ cart: products })
+      })
       .catch((error) => console.error('Error:', error))
     /* const idCartProductAdded = res.data.id */
     /* getUserCartItems(data.data.email).then(res => {
