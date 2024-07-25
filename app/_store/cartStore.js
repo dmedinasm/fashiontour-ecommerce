@@ -1,6 +1,5 @@
 import { create } from 'zustand'
 import { getUserCartItems } from '../_services/cartItems'
-import { addToCart } from '../_services/addToCart'
 import { deleteCartItem } from '../_services/deleteCartItems'
 import { createOrder } from '../_services/createOrder'
 import { toast } from 'sonner'
@@ -18,12 +17,24 @@ export const useCartStore = create((set, get) => ({
       set({ cart: products })
     })
   },
-  addProductToCart: (data) => {
-    set({ loading: true })
-    addToCart(data)
-      .then(res => {
-        const idCartProductAdded = res.data.id
-        getUserCartItems(data.data.email).then(res => {
+  addProductToCart: (userName, email, id) => {
+    /* set({ loading: true }) */
+    fetch('/api/setcart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userName,
+        email,
+        id
+      })
+    })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch((error) => console.error('Error:', error))
+    /* const idCartProductAdded = res.data.id */
+    /* getUserCartItems(data.data.email).then(res => {
           const newCartProduct = res.find(element => element.id === idCartProductAdded)
           newCartProduct.productCartQty = 1
           const cartItems = get().cart
@@ -31,14 +42,15 @@ export const useCartStore = create((set, get) => ({
           set({ error: null })
           set({ cart: newCartItems })
           toast.success('Product added to cart')
-        })
-      })
-      .catch(err => {
+        }) */
+
+    /* .catch(err => {
         set({ error: err })
         toast.error(`Error adding product to cart: ${err.message}`)
       })
-      .finally(() => set({ loading: false }))
+      .finally(() => set({ loading: false })) */
   },
+
   deleteItemfromCart: ({ id }) => {
     set({ loading: true })
     deleteCartItem(id)

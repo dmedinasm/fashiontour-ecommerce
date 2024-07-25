@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
+export const prisma = new PrismaClient()
 
 export const getProducts = async () => {
   try {
@@ -38,4 +38,22 @@ export const getProductByCategory = async (paramCategory) => {
     console.error('Error fetching products:', error)
     throw new Error('Error fetching data, try again')
   }
+}
+
+export async function createCartWithProduct (userName, email, productId, quantity = 1) {
+  const result = await prisma.cart.create({
+    data: {
+      userName,
+      email,
+      products: {
+        create: {
+          product: {
+            connect: { id: productId }
+          },
+          quantity
+        }
+      }
+    }
+  })
+  return result
 }

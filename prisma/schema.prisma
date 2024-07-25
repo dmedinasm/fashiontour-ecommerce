@@ -21,30 +21,50 @@ enum ProductCategory {
 }
 
 model Order {
-  id String @id @default(cuid())
-  email String
-  amount Float
+  id       String   @id @default(cuid())
+  email    String
+  amount   Float
   userName String
-  products Product[] @relation("OrderToProduct")
+  products OrderProduct[]
 }
 
-model Product{
-  id    String @id @default(cuid())
-  title  String
-  price Float
+model Product {
+  id          String   @id @default(cuid())
+  title       String
+  price       Float
   description String
-  image String
-  category ProductCategory
-  rating Float
-  quantity Int
-  cart        Cart?  @relation("CartToProduct", fields: [cartId], references: [id])
-  cartId      String?
-  orders      Order[] @relation("OrderToProduct")
+  image       String
+  category    ProductCategory
+  rating      Float
+  quantity    Int
+  carts       CartProduct[]
+  orders      OrderProduct[]
+}
+
+model OrderProduct {
+  id        String   @id @default(cuid())
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  quantity  Int      @default(1)
+  @@unique([orderId, productId])
 }
 
 model Cart {
-  id String @id @default(cuid())
+  id       String      @id @default(cuid())
   userName String
-  email String @unique
-  products Product[] @relation("CartToProduct")
+  email    String      @unique
+  products CartProduct[]
+}
+
+model CartProduct {
+  id        String   @id @default(cuid())
+  cart      Cart     @relation(fields: [cartId], references: [id])
+  cartId    String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  quantity  Int      @default(1)
+
+  @@unique([cartId, productId])
 }
