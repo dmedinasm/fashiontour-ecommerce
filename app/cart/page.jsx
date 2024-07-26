@@ -17,11 +17,11 @@ const Cart = () => {
     deleteItemfromCart(idCart, productId)
   }
 
-  const incrementQty = (id) => {
-    incrementProductCartQty({ id })
+  const incrementQty = (idCart, productId) => {
+    incrementProductCartQty(idCart, productId)
   }
-  const decrementQty = (id) => {
-    decrementProductCartQty({ id })
+  const decrementQty = (idCart, productId) => {
+    decrementProductCartQty(idCart, productId)
   }
 
   return (
@@ -56,7 +56,7 @@ const Cart = () => {
 
                   <div className="flex  flex-1 items-center justify-end gap-2">
                     <div className="flex items-center gap-1 ">
-                      <button onClick={() => decrementQty(item.product.id)} className="size-10 leading-10 text-gray-900  transition hover:opacity-75">
+                      <button disabled={item.quantity === 1} onClick={() => decrementQty(item.cartId, item.product.id)} className="size-10 leading-10 text-gray-900  transition hover:opacity-75">
                         &minus;
                       </button>
                       <div className=" rounded border border-gray-200 text-center place-items-center px-8 py-2 "
@@ -64,7 +64,7 @@ const Cart = () => {
                         {item.quantity}
                       </div>
 
-                      <button onClick={() => incrementQty(item.product.id)} className="size-10 leading-10 text-gray-900  transition hover:opacity-75">
+                      <button onClick={() => incrementQty(item.cartId, item.product.id)} className="size-10 leading-10 text-gray-900  transition hover:opacity-75">
                         +
                       </button>
                     </div>

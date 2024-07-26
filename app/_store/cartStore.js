@@ -105,8 +105,22 @@ export const useCartStore = create((set, get) => ({
       set({ cart: [] })
     })
   },
-  incrementProductCartQty: ({ id }) => {
-    const cartItems = get().cart
+  incrementProductCartQty: (idCart, productId) => {
+    fetch('/api/inc_itemcart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        idCart,
+        productId
+      })
+    }).then(response => response.json())
+      .then((data) => {
+        const { products } = data
+        set({ cart: products })
+      })
+    /* const cartItems = get().cart
     const newCartItems = cartItems.map(element => {
       if (element.id === id) {
         return { ...element, productCartQty: element.attributes.products.data[0].attributes.quantity === element.productCartQty ? element.attributes.products.data[0].attributes.quantity : element.productCartQty + 1 }
@@ -114,10 +128,24 @@ export const useCartStore = create((set, get) => ({
         return element
       }
     })
-    set({ cart: newCartItems })
+    set({ cart: newCartItems }) */
   },
-  decrementProductCartQty: ({ id }) => {
-    const cartItems = get().cart
+  decrementProductCartQty: (idCart, productId) => {
+    fetch('/api/dec_itemcart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        idCart,
+        productId
+      })
+    }).then(response => response.json())
+      .then((data) => {
+        const { products } = data
+        set({ cart: products })
+      })
+    /* const cartItems = get().cart
     const newCartItems = cartItems.map(element => {
       if (element.id === id) {
         return { ...element, productCartQty: element.productCartQty === 1 ? 1 : element.productCartQty - 1 }
@@ -125,6 +153,6 @@ export const useCartStore = create((set, get) => ({
         return element
       }
     })
-    set({ cart: newCartItems })
+    set({ cart: newCartItems }) */
   }
 }))

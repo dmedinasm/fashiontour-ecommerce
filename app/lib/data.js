@@ -114,3 +114,55 @@ export async function disconnectProductFromCart (idCart, productId) {
   })
   return updatedCart
 }
+
+export async function incrementItemQuantity (idCart, productId) {
+  const updatedItem = await prisma.cartProduct.update({
+    where: {
+      cartId_productId: { cartId: idCart, productId } //eslint-disable-line
+    },
+    data: {
+      quantity: {
+        increment: 1
+      }
+    }
+  })
+
+  const updatedCart = await prisma.cart.findUnique({
+    where: { id: updatedItem.cartId },
+    include: {
+      products: {
+        include: {
+          product: true
+        }
+      }
+    }
+  })
+
+  return updatedCart
+}
+
+export async function decrementItemQuantity (idCart, productId) {
+  const updatedItem = await prisma.cartProduct.update({
+    where: {
+      cartId_productId: { cartId: idCart, productId } //eslint-disable-line
+    },
+    data: {
+      quantity: {
+        decrement: 1
+      }
+    }
+  })
+
+  const updatedCart = await prisma.cart.findUnique({
+    where: { id: updatedItem.cartId },
+    include: {
+      products: {
+        include: {
+          product: true
+        }
+      }
+    }
+  })
+
+  return updatedCart
+}
