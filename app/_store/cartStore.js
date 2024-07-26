@@ -2,7 +2,7 @@ import { create } from 'zustand'
 /* import { getUserCartItems } from '../_services/cartItems' */
 import { deleteCartItem } from '../_services/deleteCartItems'
 import { createOrder } from '../_services/createOrder'
-import { toast } from 'sonner'
+/* import { toast } from 'sonner' */
 
 export const useCartStore = create((set, get) => ({
   cart: [],
@@ -42,8 +42,6 @@ export const useCartStore = create((set, get) => ({
       .then((data) => {
         const { products } = data
         console.log(products)
-        /* const cartItems = get().cart
-        const newCartItems = [...cartItems, product] */
         set({ cart: products })
       })
       .catch((error) => console.error('Error:', error))
@@ -65,9 +63,9 @@ export const useCartStore = create((set, get) => ({
       .finally(() => set({ loading: false })) */
   },
 
-  deleteItemfromCart: ({ id }) => {
-    set({ loading: true })
-    deleteCartItem(id)
+  deleteItemfromCart: (idCart, productId) => {
+    /* set({ loading: true }) */
+    /* deleteCartItem(id)
       .then(res => {
         console.log(res)
         const idProductDeleted = res.data.id
@@ -79,7 +77,21 @@ export const useCartStore = create((set, get) => ({
       .catch((err) => {
         toast.error(`Error deleting product from cart: ${err.message}`)
       })
-      .finally(() => set({ loading: false }))
+      .finally(() => set({ loading: false })) */
+    fetch('/api/deletecartitem', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        idCart,
+        productId
+      })
+    }).then(response => response.json())
+      .then((data) => {
+        const { products } = data
+        set({ cart: products })
+      })
   },
 
   createOrderFromCart: (data) => {

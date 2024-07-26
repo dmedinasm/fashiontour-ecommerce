@@ -13,8 +13,8 @@ const Cart = () => {
   const { totalPrice } = useTotalAmount({ cart })
   const router = useRouter()
 
-  const deleteItem = (id) => {
-    deleteItemfromCart({ id })
+  const deleteItem = (idCart, productId) => {
+    deleteItemfromCart(idCart, productId)
   }
 
   const incrementQty = (id) => {
@@ -73,7 +73,7 @@ const Cart = () => {
                       <div className='font-bold text-sm '>
                         <p className='flex gap-1' ><span>$</span>{(item.product.price * item.quantity).toFixed(2)}</p>
                       </div>
-                      <button onClick={() => deleteItem(item.product.id)} className="text-gray-600 transition hover:text-red-600">
+                      <button onClick={() => deleteItem(item.cartId, item.product.id)} className="text-gray-600 transition hover:text-red-600">
                         <span className="sr-only">Remove item</span>
 
                         <svg

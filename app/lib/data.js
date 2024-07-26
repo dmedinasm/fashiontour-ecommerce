@@ -93,3 +93,24 @@ export async function getCartItems (email) {
   })
   return cartItems
 }
+
+export async function disconnectProductFromCart (idCart, productId) {
+  await prisma.cartProduct.deleteMany({
+    where: {
+      cartId: idCart,
+      productId
+    }
+  })
+
+  const updatedCart = await prisma.cart.findUnique({
+    where: { id: idCart },
+    include: {
+      products: {
+        include: {
+          product: true
+        }
+      }
+    }
+  })
+  return updatedCart
+}
