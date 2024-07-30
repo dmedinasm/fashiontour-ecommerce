@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 /* import { getUserCartItems } from '../_services/cartItems' */
-import { deleteCartItem } from '../_services/deleteCartItems'
+/* import { deleteCartItem } from '../_services/deleteCartItems'
 import { createOrder } from '../_services/createOrder'
 /* import { toast } from 'sonner' */
 
@@ -94,16 +94,31 @@ export const useCartStore = create((set, get) => ({
       })
   },
 
-  createOrderFromCart: (data) => {
-    const cartItems = get().cart
-    createOrder(data).then(res => {
+  createOrderFromCart: (email, amount, userName, cartId) => {
+    /* const cartItems = get().cart
+    createOrder(data).then(() => {
       cartItems.forEach(element => {
         deleteCartItem(element.id).then(res => {
           console.log(res)
         })
       })
       set({ cart: [] })
-    })
+    }) */
+    fetch('/api/order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email,
+        amount,
+        userName,
+        cartId
+      })
+    }).then(res => res.json())
+      .then((data) => {
+        console.log(data)
+      })
   },
   incrementProductCartQty: (idCart, productId) => {
     fetch('/api/inc_itemcart', {

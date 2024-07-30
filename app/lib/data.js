@@ -166,3 +166,21 @@ export async function decrementItemQuantity (idCart, productId) {
 
   return updatedCart
 }
+
+export async function createOrder (email, amount, userName, cartId) {
+  const order = await prisma.order.create({
+    data: {
+      email,
+      amount,
+      userName
+    }
+  })
+
+  const updatedCart = await prisma.cartProduct.deleteMany({
+    where: {
+      cartId
+    }
+  })
+
+  return { order, updatedCart }
+}

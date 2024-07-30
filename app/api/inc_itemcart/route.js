@@ -7,9 +7,9 @@ export async function POST (request) {
     const items = await incrementItemQuantity(idCart, productId)
     return NextResponse.json(items)
   } catch (error) {
-    console.error('Error fetching products:', error)
+    console.error('Error increasing item:', error)
     return NextResponse.json(
-      { error: 'Error fetching data, try again' },
+      { error: 'Error increasing item, try again' },
       { status: 500 }
     )
   }

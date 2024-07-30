@@ -40,7 +40,7 @@ const ProductInfo = ({ product }) => {
           }
           <h2 className='text-[30px] text-primary font-medium mt-5'>${product?.price}</h2>
           <button className='flex gap-2 py-3 hover:bg-blue-700 cursor-pointer px-10 text-white bg-primary rounded-lg mt-5'
-            disabled={error || !isSignedIn ? false : product.quantity === 0 || cart.some(item => item.product.id === product.id)}
+            disabled={error || !isSignedIn ? false : product.quantity === 0 || cart?.some(item => item.product.id === product.id)}
             onClick={(event) => onAddToCartClick(event)}>
             <ShoppingCart />
             {loading ? 'Adding...' : 'Add to Cart'}

@@ -25,7 +25,6 @@ model Order {
   email    String
   amount   Float
   userName String
-  products OrderProduct[]
 }
 
 model Product {
@@ -38,18 +37,9 @@ model Product {
   rating      Float
   quantity    Int
   carts       CartProduct[]
-  orders      OrderProduct[]
 }
 
-model OrderProduct {
-  id        String   @id @default(cuid())
-  order     Order    @relation(fields: [orderId], references: [id])
-  orderId   String
-  product   Product  @relation(fields: [productId], references: [id])
-  productId String
-  quantity  Int      @default(1)
-  @@unique([orderId, productId])
-}
+
 
 model Cart {
   id       String      @id @default(cuid())

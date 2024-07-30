@@ -6,18 +6,15 @@ import { useCartStore } from '../../_store/cartStore'
 const CheckoutForm = ({ amount }) => {
   const { user } = useUser()
   const cart = useCartStore(state => state.cart)
-  const createOrderFromCart = useCartStore(state => state.createOrderFromCart)
-  const productsIds = cart.map(element => {
-    return element?.attributes?.products.data[0].id
-  })
-  const data = {
+  /* const createOrderFromCart = useCartStore(state => state.createOrderFromCart) */
+
+  /* const data = {
     data: {
       email: user?.primaryEmailAddress.emailAddress,
       amount,
-      userName: user?.fullName,
-      products: productsIds
+      userName: user?.fullName
     }
-  }
+  } */
 
   const stripe = useStripe()
   const elements = useElements()
@@ -45,15 +42,37 @@ const CheckoutForm = ({ amount }) => {
       return
     }
 
-    createOrderFromCart(data)
+    /* createOrderFromCart(user?.primaryEmailAddress.emailAddress, amount, user?.fullName,
+      cart[0].cartId) */
+    const createOrder = async () => {
+      try {
+        const res = await fetch('/api/order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: user?.primaryEmailAddress.emailAddress,
+            amount,
+            userName: user?.fullName,
+            cartId: cart?.CartId
+          })
+        })
+        if (!res.ok) throw new Error('Error creating order')
+      } catch (err) {
+        setErrorMessage(error.message)
+      } finally {
+        setLoading(false)
+      }
+    }
     sendEmail()
+    createOrder()
     const res = await fetch('/api/create-intent', {
       method: 'POST',
       body: JSON.stringify({ amount })
     })
     const clientPayment = await res.json()
     const { error } = await stripe.confirmPayment({
-      // `Elements` instance that was used to create the Payment Element
       elements,
       clientSecret: clientPayment.client_secret,
       confirmParams: {
@@ -62,26 +81,24 @@ const CheckoutForm = ({ amount }) => {
     })
 
     if (error) {
-      // Show error to your customer (for example, payment details incomplete)
       handleError(error)
-    } // else {
-    // Your customer will be redirected to your `return_url`. For some payment
-    // methods like iDEAL, your customer will be redirected to an intermediate
-    // site first to authorize the payment, then redirected to the `return_url`.
-    // }
+    }
   }
 
   const sendEmail = async () => {
-    const res = await fetch('/api/send-email', {
-      method: 'POST',
-      body: JSON.stringify({
-        amount,
-        email: user?.primaryEmailAddress.emailAddress,
-        fullName: user?.fullName
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        body: JSON.stringify({
+          amount,
+          email: user?.primaryEmailAddress.emailAddress,
+          fullName: user?.fullName
+        })
       })
-    })
-    const data = await res.json()
-  setLoading(false)
+      if (!res.ok) throw new Error('Error fetching data')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (

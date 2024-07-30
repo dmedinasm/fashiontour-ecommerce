@@ -9,9 +9,9 @@ export async function POST (request) {
     )
     return NextResponse.json(result, { status: 201 })
   } catch (error) {
-    console.error('Error adding product  to cart:', error)
+    console.error('Error deleting product:', error)
     return NextResponse.json(
-      { error: 'Error adding product to cart, try again' },
+      { error: 'Error deleting product, try again' },
       { status: 500 }
     )
   }
