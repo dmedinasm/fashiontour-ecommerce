@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-/* import { toast } from 'sonner' */
+import { toast } from 'sonner'
 
 export const useCartStore = create((set, get) => ({
   cart: [],
@@ -19,45 +19,39 @@ export const useCartStore = create((set, get) => ({
       .then((data) => {
         const { products } = data
         set({ cart: products })
+        set({ error: null })
       })
-      .catch((error) => console.error('Error:', error))
-  },
-  addProductToCart: (userName, email, id) => {
-    /* set({ loading: true }) */
-    fetch('/api/setcart', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        userName,
-        email,
-        id
-      })
-    })
-      .then(response => response.json())
-      .then((data) => {
-        const { products } = data
-        console.log(products)
-        set({ cart: products })
-      })
-      .catch((error) => console.error('Error:', error))
-    /* const idCartProductAdded = res.data.id */
-    /* getUserCartItems(data.data.email).then(res => {
-          const newCartProduct = res.find(element => element.id === idCartProductAdded)
-          newCartProduct.productCartQty = 1
-          const cartItems = get().cart
-          const newCartItems = [...cartItems, newCartProduct]
-          set({ error: null })
-          set({ cart: newCartItems })
-          toast.success('Product added to cart')
-        }) */
-
-    /* .catch(err => {
+      .catch((err) => {
         set({ error: err })
-        toast.error(`Error adding product to cart: ${err.message}`)
+        toast.error(`Error fetching products: ${err.message}`)
       })
-      .finally(() => set({ loading: false })) */
+  },
+  addProductToCart: async (userName, email, id) => {
+    set({ loading: true })
+    try {
+      const res = await fetch('/api/setcart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userName,
+          email,
+          id
+        })
+      })
+      if (!res.ok) throw new Error('Error adding product to cart')
+      const data = await res.json()
+      const { products } = data
+      set({ error: null })
+      set({ cart: products })
+      toast.success('Product added to cart')
+    } catch (err) {
+      set({ error: err })
+      toast.error(`Error adding product to cart: ${err.message}`)
+    } finally {
+      set({ loading: false })
+    }
   },
 
   deleteItemfromCart: (idCart, productId) => {

@@ -1,43 +1,31 @@
 import { PrismaClient } from '@prisma/client'
-
 export const prisma = new PrismaClient()
 
 export const getProducts = async () => {
   try {
     const products = await prisma.product.findMany()
     return products
-  } catch (error) {
-    console.error('Error fetching products:', error)
-    throw new Error('Error fetching data, try again')
+  } catch (err) {
+    console.error('Error fetching data', err)
   }
 }
 
 export const getProductById = async (paramId) => {
-  try {
-    const product = await prisma.product.findFirst({
-      where: {
-        id: paramId
-      }
-    })
-    return product
-  } catch (error) {
-    console.error('Error fetching products:', error)
-    throw new Error('Error fetching data, try again')
-  }
+  const product = await prisma.product.findFirst({
+    where: {
+      id: paramId
+    }
+  })
+  return product
 }
 
 export const getProductByCategory = async (paramCategory) => {
-  try {
-    const products = await prisma.product.findMany({
-      where: {
-        category: paramCategory
-      }
-    })
-    return products
-  } catch (error) {
-    console.error('Error fetching products:', error)
-    throw new Error('Error fetching data, try again')
-  }
+  const products = await prisma.product.findMany({
+    where: {
+      category: paramCategory
+    }
+  })
+  return products
 }
 
 export async function createCartWithProduct (userName, email, productId, quantity = 1) {
