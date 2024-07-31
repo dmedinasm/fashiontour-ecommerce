@@ -1,14 +1,12 @@
 'use client'
 import { ShoppingCart } from 'lucide-react'
 import SkeltonEffect from './SkeltonEffect'
-/* import { useRouter } from 'next/navigation' */
 import { useUser } from '@clerk/nextjs'
 import { useCartStore } from '../../_store/cartStore'
 import { Toaster } from 'sonner'
 
 const ProductInfo = ({ product }) => {
   const { user, isSignedIn } = useUser()
-  /* const router = useRouter() */
   const cart = useCartStore(state => state.cart)
   const loading = useCartStore(state => state.loading)
   const error = useCartStore(state => state.error)
@@ -19,9 +17,6 @@ const ProductInfo = ({ product }) => {
       window.location.href = '/sign-in'
     } else {
       event.target.disabled = true
-      /* if (!loading) {
-
-      } */
       addProductToCart(user.fullName, user.primaryEmailAddress.emailAddress, product.id)
       event.target.disabled = false
     }

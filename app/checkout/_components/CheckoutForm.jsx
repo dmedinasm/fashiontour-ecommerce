@@ -6,16 +6,6 @@ import { useCartStore } from '../../_store/cartStore'
 const CheckoutForm = ({ amount }) => {
   const { user } = useUser()
   const cart = useCartStore(state => state.cart)
-  /* const createOrderFromCart = useCartStore(state => state.createOrderFromCart) */
-
-  /* const data = {
-    data: {
-      email: user?.primaryEmailAddress.emailAddress,
-      amount,
-      userName: user?.fullName
-    }
-  } */
-
   const stripe = useStripe()
   const elements = useElements()
   const [errorMessage, setErrorMessage] = useState()
@@ -42,8 +32,6 @@ const CheckoutForm = ({ amount }) => {
       return
     }
 
-    /* createOrderFromCart(user?.primaryEmailAddress.emailAddress, amount, user?.fullName,
-      cart[0].cartId) */
     const createOrder = async () => {
       try {
         const res = await fetch('/api/order', {

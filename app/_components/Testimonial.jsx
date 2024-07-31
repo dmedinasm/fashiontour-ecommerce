@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 
 const Testimonial = () => {
@@ -11,10 +12,10 @@ const Testimonial = () => {
     <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-8">
       <blockquote className="rounded-lg bg-gray-50 p-6 shadow-sm sm:p-8">
         <div className="flex items-center gap-4">
-          <img
+          <Image
             alt=""
             src="https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80"
-            className="size-14 rounded-full object-cover"
+            className="size-14 rounded-full object-cover" width={56} height={56}
           />
 
           <div>
@@ -76,16 +77,16 @@ const Testimonial = () => {
         </div>
 
         <p className="mt-4 text-gray-700">
-        Fashion Tour has completely transformed my shopping experience. The vast selection of trendy clothing and accessories is amazing, and the quality is top-notch. The customer service team is always helpful and responsive. I always find exactly what I'm looking for!
+        Fashion Tour has completely transformed my shopping experience. The vast selection of trendy clothing and accessories is amazing, and the quality is top-notch. The customer service team is always helpful and responsive. I always find exactly what I&apos;m looking for!
         </p>
       </blockquote>
 
       <blockquote className="rounded-lg bg-gray-50 p-6 shadow-sm sm:p-8">
         <div className="flex items-center gap-4">
-          <img
+          <Image
             alt="jane"
             src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            className="size-14 rounded-full object-cover"
+            className="size-14 rounded-full object-cover" width={56} height={56}
           />
 
           <div>
@@ -147,16 +148,16 @@ const Testimonial = () => {
         </div>
 
         <p className="mt-4 text-gray-700">
-        I've been a loyal customer of Fashion Tour for the past year, and I couldn't be happier. The website is easy to navigate, and the checkout process is smooth and secure. The delivery is always prompt, and the clothes fit perfectly. Highly recommend Fashion Tour for all your fashion needs!
+        I&apos;ve been a loyal customer of Fashion Tour for the past year, and I couldn&apos;t be happier. The website is easy to navigate, and the checkout process is smooth and secure. The delivery is always prompt, and the clothes fit perfectly. Highly recommend Fashion Tour for all your fashion needs!
         </p>
       </blockquote>
 
       <blockquote className="rounded-lg bg-gray-50 p-6 shadow-sm sm:p-8">
         <div className="flex items-center gap-4">
-              <img
+              <Image
                 alt="emily"
                 src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                className="size-14 rounded-full object-cover"
+                className="size-14 rounded-full object-cover" width={56} height={56}
               />
           <div>
             <div className="flex justify-center gap-0.5 text-green-500">

@@ -2,38 +2,37 @@
 import React, { useState } from 'react'
 import { Toaster, toast } from 'sonner'
 function Contact () {
-  const [buttonLoad, setButtonLoad] = useState(false) 
-  const sendContactEmail = async ({name, message, email}) => {
+  const [buttonLoad, setButtonLoad] = useState(false)
+  const sendContactEmail = async ({ name, message, email }) => {
     setButtonLoad(true)
-      const res = await fetch('/api/send-emailcontact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          message
-        })
-      });
-      
-      const data = await res.json();
-      setButtonLoad(false)
-      if (res.ok && data?.error === null) {
-        return { success: true, message: toast.success('Message sent') };
-      } else {
-        return { success: false, message: toast.error('Error sending message') + data.error };
-      }
-    
+    const res = await fetch('/api/send-emailcontact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        message
+      })
+    })
+
+    const data = await res.json()
+    setButtonLoad(false)
+    if (res.ok && data?.error === null) {
+      return { success: true, message: toast.success('Message sent') }
+    } else {
+      return { success: false, message: toast.error('Error sending message') + data.error }
+    }
   }
-  const handleSubmit = (event) =>{
+  const handleSubmit = (event) => {
     event.preventDefault()
     const form = event.target
     const formData = new FormData(form)
     const name = formData.get('name')
     const email = formData.get('email')
     const message = formData.get('message')
-    sendContactEmail({name, email, message})
+    sendContactEmail({ name, email, message })
   }
   return (
     <section >

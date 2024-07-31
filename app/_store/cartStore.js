@@ -1,7 +1,4 @@
 import { create } from 'zustand'
-/* import { getUserCartItems } from '../_services/cartItems' */
-/* import { deleteCartItem } from '../_services/deleteCartItems'
-import { createOrder } from '../_services/createOrder'
 /* import { toast } from 'sonner' */
 
 export const useCartStore = create((set, get) => ({

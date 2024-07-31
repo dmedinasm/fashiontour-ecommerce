@@ -1,8 +1,6 @@
-/* 'use client' */
 import ProductBanner from '../_components/ProductBanner'
 import ProductInfo from '../_components/ProductInfo'
 import ProductList from '../../_components/ProductList'
-/* import { usePathname } from 'next/navigation' */
 import Breadcrumb from '../../_components/Breadcrumb'
 import { getProductById, getProductByCategory } from '../../lib/data'
 const ProductDetail = async ({ params }) => {

@@ -5,18 +5,14 @@ import ProductListSkeleton from './_components/ProductListSkeleton'
 import Testimonial from './_components/Testimonial'
 export default function Home () {
   return (
-    <div className='mb-20 pb-40'>
+    <main className='mb-20 pb-40'>
       <Hero/>
-
       {/* Latest Product Section */}
       <Suspense fallback={<ProductListSkeleton/>}>
         <ProductSection />
       </Suspense>
-
       {/* Testimonial Section */}
-
       <Testimonial/>
-
-    </div>
+    </main>
   )
 }
