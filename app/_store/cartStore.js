@@ -54,8 +54,8 @@ export const useCartStore = create((set, get) => ({
     }
   },
 
-  deleteItemfromCart: (idCart, productId) => {
-    /* set({ loading: true }) */
+  deleteItemfromCart: async (idCart, productId) => {
+    set({ loading: true })
     /* deleteCartItem(id)
       .then(res => {
         console.log(res)
@@ -69,20 +69,30 @@ export const useCartStore = create((set, get) => ({
         toast.error(`Error deleting product from cart: ${err.message}`)
       })
       .finally(() => set({ loading: false })) */
-    fetch('/api/deletecartitem', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        idCart,
-        productId
+
+    try {
+      const res = await fetch('/api/deletecartitem', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          idCart,
+          productId
+        })
       })
-    }).then(response => response.json())
-      .then((data) => {
-        const { products } = data
-        set({ cart: products })
-      })
+      if (!res.ok) throw new Error('Error deleting item from cart')
+      const data = await res.json()
+      const { products } = data
+      set({ cart: products })
+      set({ error: null })
+      toast.success('Product removed from cart')
+    } catch (err) {
+      set({ error: err })
+      toast.error(`Error deleting item from cart:${err.message}`)
+    } finally {
+      set({ loading: false })
+    }
   },
 
   createOrderFromCart: (email, amount, userName, cartId) => {

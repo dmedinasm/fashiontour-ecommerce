@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 export function useTotalAmount ({ cart }) {
   const [totalPrice, setTotalPrice] = useState(0)
   useEffect(() => {
-    if (cart.length === 0) {
+    if (cart?.length === 0) {
       setTotalPrice(0)
       return
     }

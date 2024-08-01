@@ -11,164 +11,196 @@ export const getProducts = async () => {
 }
 
 export const getProductById = async (paramId) => {
-  const product = await prisma.product.findFirst({
-    where: {
-      id: paramId
-    }
-  })
-  return product
+  try {
+    const product = await prisma.product.findFirst({
+      where: {
+        id: paramId
+      }
+    })
+    return product
+  } catch (err) {
+    console.error('Error fetching data', err)
+  }
 }
 
 export const getProductByCategory = async (paramCategory) => {
-  const products = await prisma.product.findMany({
-    where: {
-      category: paramCategory
-    }
-  })
-  return products
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        category: paramCategory
+      }
+    })
+    return products
+  } catch (err) {
+    console.error('Error fetching data', err)
+  }
 }
 
 export async function createCartWithProduct (userName, email, productId, quantity = 1) {
-  const result = await prisma.cart.upsert({
-    where: {
-      email
-    },
-    create: {
-      userName,
-      email,
-      products: {
-        create: {
-          product: {
-            connect: { id: productId }
-          },
-          quantity
+  try {
+    const result = await prisma.cart.upsert({
+      where: {
+        email
+      },
+      create: {
+        userName,
+        email,
+        products: {
+          create: {
+            product: {
+              connect: { id: productId }
+            },
+            quantity
+          }
+        }
+      },
+      update: {
+        products: {
+          create: {
+            product: {
+              connect: { id: productId }
+            },
+            quantity
+          }
+        }
+      },
+      include: {
+        products: {
+          include: {
+            product: true
+          }
         }
       }
-    },
-    update: {
-      products: {
-        create: {
-          product: {
-            connect: { id: productId }
-          },
-          quantity
-        }
-      }
-    },
-    include: {
-      products: {
-        include: {
-          product: true
-        }
-      }
-    }
-  })
-  return result
+    })
+    return result
+  } catch (err) {
+    console.error('Error creating record', err)
+  }
 }
 
 export async function getCartItems (email) {
-  const cartItems = await prisma.cart.findFirst({
-    where: {
-      email
-    },
-    include: {
-      products: {
-        include: {
-          product: true
+  try {
+    const cartItems = await prisma.cart.findFirst({
+      where: {
+        email
+      },
+      include: {
+        products: {
+          include: {
+            product: true
+          }
         }
       }
-    }
-  })
-  return cartItems
+    })
+    return cartItems
+  } catch (err) {
+    console.error('Error fetching data', err)
+  }
 }
 
 export async function disconnectProductFromCart (idCart, productId) {
-  await prisma.cartProduct.deleteMany({
-    where: {
-      cartId: idCart,
-      productId
-    }
-  })
+  try {
+    await prisma.cartProduct.deleteMany({
+      where: {
+        cartId: idCart,
+        productId
+      }
+    })
 
-  const updatedCart = await prisma.cart.findUnique({
-    where: { id: idCart },
-    include: {
-      products: {
-        include: {
-          product: true
+    const updatedCart = await prisma.cart.findUnique({
+      where: { id: idCart },
+      include: {
+        products: {
+          include: {
+            product: true
+          }
         }
       }
-    }
-  })
-  return updatedCart
+    })
+    return updatedCart
+  } catch (err) {
+    console.error('Error fetching data', err)
+  }
 }
 
 export async function incrementItemQuantity (idCart, productId) {
-  const updatedItem = await prisma.cartProduct.update({
-    where: {
-      cartId_productId: { cartId: idCart, productId } //eslint-disable-line
-    },
-    data: {
-      quantity: {
-        increment: 1
-      }
-    }
-  })
-
-  const updatedCart = await prisma.cart.findUnique({
-    where: { id: updatedItem.cartId },
-    include: {
-      products: {
-        include: {
-          product: true
+  try {
+    const updatedItem = await prisma.cartProduct.update({
+      where: {
+        cartId_productId: { cartId: idCart, productId } //eslint-disable-line
+      },
+      data: {
+        quantity: {
+          increment: 1
         }
       }
-    }
-  })
+    })
 
-  return updatedCart
+    const updatedCart = await prisma.cart.findUnique({
+      where: { id: updatedItem.cartId },
+      include: {
+        products: {
+          include: {
+            product: true
+          }
+        }
+      }
+    })
+
+    return updatedCart
+  } catch (err) {
+    console.error('Error fetching data', err)
+  }
 }
 
 export async function decrementItemQuantity (idCart, productId) {
-  const updatedItem = await prisma.cartProduct.update({
-    where: {
-      cartId_productId: { cartId: idCart, productId } //eslint-disable-line
-    },
-    data: {
-      quantity: {
-        decrement: 1
-      }
-    }
-  })
-
-  const updatedCart = await prisma.cart.findUnique({
-    where: { id: updatedItem.cartId },
-    include: {
-      products: {
-        include: {
-          product: true
+  try {
+    const updatedItem = await prisma.cartProduct.update({
+      where: {
+        cartId_productId: { cartId: idCart, productId } //eslint-disable-line
+      },
+      data: {
+        quantity: {
+          decrement: 1
         }
       }
-    }
-  })
+    })
 
-  return updatedCart
+    const updatedCart = await prisma.cart.findUnique({
+      where: { id: updatedItem.cartId },
+      include: {
+        products: {
+          include: {
+            product: true
+          }
+        }
+      }
+    })
+
+    return updatedCart
+  } catch (err) {
+    console.error('Error fetching data', err)
+  }
 }
 
 export async function createOrder (email, amount, userName, cartId) {
-  const order = await prisma.order.create({
-    data: {
-      email,
-      amount,
-      userName
-    }
-  })
+  try {
+    const order = await prisma.order.create({
+      data: {
+        email,
+        amount,
+        userName
+      }
+    })
 
-  const updatedCart = await prisma.cartProduct.deleteMany({
-    where: {
-      cartId
-    }
-  })
+    const updatedCart = await prisma.cartProduct.deleteMany({
+      where: {
+        cartId
+      }
+    })
 
-  return { order, updatedCart }
+    return { order, updatedCart }
+  } catch (err) {
+    console.error('Error creating order', err)
+  }
 }

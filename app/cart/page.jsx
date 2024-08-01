@@ -5,6 +5,7 @@ import { useTotalAmount } from '../_hooks/useTotalAmount'
 import Image from 'next/image'
 import { useCartStore } from '../_store/cartStore'
 import { Toaster } from 'sonner'
+import ErrorNotification from '../_components/ErrorNotification'
 const Cart = () => {
   const cart = useCartStore(state => state.cart)
   const deleteItemfromCart = useCartStore(state => state.deleteItemfromCart)
@@ -34,7 +35,8 @@ const Cart = () => {
           </header>
 
           <div className="mt-8">
-            <ul className="space-y-4">
+            {cart
+              ? <ul className="space-y-4">
               {cart.map(item => (
                 <li className="flex flex-col xs:flex-row items-center my-12 text-center xs:text-left xs:my-0 gap-4 " key={item.product.id}>
                   <Image
@@ -97,6 +99,8 @@ const Cart = () => {
               ))}
 
             </ul>
+              : <ErrorNotification/>
+            }
 
             <div className="mt-8 flex justify-end border-t border-gray-100 pt-8">
               <div className="w-screen max-w-lg space-y-4">
