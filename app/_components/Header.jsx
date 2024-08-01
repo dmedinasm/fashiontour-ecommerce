@@ -17,6 +17,7 @@ const Header = () => {
   const [openMenu, setOpenMenu] = useState(false)
   const { isSignedIn, user } = useUser()
   const cart = useCartStore((state) => state.cart)
+
   useUserCartItems({ email: user?.primaryEmailAddress?.emailAddress, isSignedIn })
   const { openCart, setOpenCart } = useOpenCart()
 
