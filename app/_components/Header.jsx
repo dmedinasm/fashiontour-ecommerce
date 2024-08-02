@@ -17,11 +17,10 @@ const Header = () => {
   const [openMenu, setOpenMenu] = useState(false)
   const { isSignedIn, user } = useUser()
   const cart = useCartStore((state) => state.cart)
-
   useUserCartItems({ email: user?.primaryEmailAddress?.emailAddress, isSignedIn })
   const { openCart, setOpenCart } = useOpenCart()
 
-  return !isTryLogin && (
+  return (!isTryLogin || isSignedIn) && (
     <header className="bg-white shadow-sm">
   <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
     <div className="flex h-16 items-center justify-between">

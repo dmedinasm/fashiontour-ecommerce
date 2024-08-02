@@ -6,9 +6,9 @@ export function useTryLogin () {
   const { isSignedIn } = useUser()
   useEffect(() => {
     const isAttemptingLogin = window.location.href.includes('sign-in') || window.location.href.includes('sign-up')
-    if (isSignedIn) {
+    /* if (isSignedIn && isAttemptingLogin) {
       window.history.go(-(window.history.length - 1))
-    }
+    } */
     setIsTryLogin(isAttemptingLogin)
   }, [isSignedIn])
 

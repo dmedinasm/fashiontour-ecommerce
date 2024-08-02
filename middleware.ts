@@ -10,6 +10,22 @@ export default authMiddleware({
   // Prevent the specified routes from accessing
   // authentication information:
   // ignoredRoutes: ['/no-auth-in-this-route'],
+  /* afterAuth (auth, req) {
+    // Si el usuario no está autenticado y está intentando acceder a una ruta protegida
+    if (!auth.userId && !auth.isPublicRoute) {
+      return redirectToSignIn({ returnBackUrl: req.url })
+    }
+
+    // Si el usuario está autenticado y está intentando acceder a login o signup
+    if (auth.userId && ['/login', '/signup'].includes(new URL(req.url).pathname)) {
+      const path = '/'
+      const dashboardUrl = new URL(path, req.url)
+      return NextResponse.redirect(dashboardUrl)
+    }
+
+    // Permitir el acceso en todos los demás casos
+    return NextResponse.next()
+  } */
 })
 
 export const config = {
