@@ -10,7 +10,6 @@ const ProductInfo = ({ product }) => {
   const cart = useCartStore(state => state.cart)
   const loading = useCartStore(state => state.loading)
   const error = useCartStore(state => state.error)
-  console.log(cart)
   const addProductToCart = useCartStore(state => state.addProductToCart)
   const onAddToCartClick = (event) => {
     if (!user) {

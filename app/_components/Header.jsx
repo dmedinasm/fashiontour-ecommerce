@@ -6,18 +6,16 @@ import React, { useState } from 'react'
 import Cart from './Cart'
 import Link from 'next/link'
 import { useTryLogin } from '../_hooks/useTryLogin'
-import { useUserCartItems } from '../_hooks/useUserCartItems'
 import { useOpenCart } from '../_hooks/useOpenCart'
 import { useCartStore } from '../_store/cartStore'
 import VerticalMenu from '../_components/VerticalMenu'
 import Hamburger from '../_components/Hamburger'
 
 const Header = () => {
-  const { isTryLogin } = useTryLogin()
   const [openMenu, setOpenMenu] = useState(false)
   const { isSignedIn, user } = useUser()
   const cart = useCartStore((state) => state.cart)
-  useUserCartItems({ email: user?.primaryEmailAddress?.emailAddress, isSignedIn })
+  const { isTryLogin } = useTryLogin(user?.primaryEmailAddress.emailAddress)
   const { openCart, setOpenCart } = useOpenCart()
 
   return (!isTryLogin || isSignedIn) && (

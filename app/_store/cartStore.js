@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { toast } from 'sonner'
 
-export const useCartStore = create((set, get) => ({
+export const useCartStore = create((set) => ({
   cart: [],
   loading: false,
   error: null,
@@ -56,20 +56,6 @@ export const useCartStore = create((set, get) => ({
 
   deleteItemfromCart: async (idCart, productId) => {
     set({ loading: true })
-    /* deleteCartItem(id)
-      .then(res => {
-        console.log(res)
-        const idProductDeleted = res.data.id
-        const cartItems = get().cart
-        const newCartItems = cartItems.filter(element => element.id !== idProductDeleted)
-        set({ cart: newCartItems })
-        toast.success('Product removed from cart')
-      })
-      .catch((err) => {
-        toast.error(`Error deleting product from cart: ${err.message}`)
-      })
-      .finally(() => set({ loading: false })) */
-
     try {
       const res = await fetch('/api/deletecartitem', {
         method: 'POST',
@@ -96,15 +82,6 @@ export const useCartStore = create((set, get) => ({
   },
 
   createOrderFromCart: (email, amount, userName, cartId) => {
-    /* const cartItems = get().cart
-    createOrder(data).then(() => {
-      cartItems.forEach(element => {
-        deleteCartItem(element.id).then(res => {
-          console.log(res)
-        })
-      })
-      set({ cart: [] })
-    }) */
     fetch('/api/order', {
       method: 'POST',
       headers: {
@@ -136,15 +113,6 @@ export const useCartStore = create((set, get) => ({
         const { products } = data
         set({ cart: products })
       })
-    /* const cartItems = get().cart
-    const newCartItems = cartItems.map(element => {
-      if (element.id === id) {
-        return { ...element, productCartQty: element.attributes.products.data[0].attributes.quantity === element.productCartQty ? element.attributes.products.data[0].attributes.quantity : element.productCartQty + 1 }
-      } else {
-        return element
-      }
-    })
-    set({ cart: newCartItems }) */
   },
   decrementProductCartQty: (idCart, productId) => {
     fetch('/api/dec_itemcart', {
@@ -161,14 +129,5 @@ export const useCartStore = create((set, get) => ({
         const { products } = data
         set({ cart: products })
       })
-    /* const cartItems = get().cart
-    const newCartItems = cartItems.map(element => {
-      if (element.id === id) {
-        return { ...element, productCartQty: element.productCartQty === 1 ? 1 : element.productCartQty - 1 }
-      } else {
-        return element
-      }
-    })
-    set({ cart: newCartItems }) */
   }
 }))

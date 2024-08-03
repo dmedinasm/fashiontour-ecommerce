@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useUser } from '@clerk/nextjs'
 import { useCartStore } from '../../_store/cartStore'
+import ErrorNotification from '../../_components/ErrorNotification'
 
 const CheckoutForm = ({ amount }) => {
   const { user } = useUser()
@@ -9,8 +10,8 @@ const CheckoutForm = ({ amount }) => {
   const stripe = useStripe()
   const elements = useElements()
   const [errorMessage, setErrorMessage] = useState()
+  const [orderError, setOrderError] = useState(false)
   const [loading, setLoading] = useState(false)
-  console.log(cart)
   const handleError = (error) => {
     setLoading(false)
     setErrorMessage(error.message)
@@ -48,7 +49,8 @@ const CheckoutForm = ({ amount }) => {
         })
         if (!res.ok) throw new Error('Error creating order')
       } catch (err) {
-        setErrorMessage(error.message)
+        setErrorMessage(err.message)
+        setOrderError(true)
       } finally {
         setLoading(false)
       }
@@ -60,7 +62,8 @@ const CheckoutForm = ({ amount }) => {
       body: JSON.stringify({ amount })
     })
     const clientPayment = await res.json()
-    const { error } = await stripe.confirmPayment({
+
+    const { error } = !orderError && await stripe.confirmPayment({
       elements,
       clientSecret: clientPayment.client_secret,
       confirmParams: {
@@ -84,6 +87,9 @@ const CheckoutForm = ({ amount }) => {
         })
       })
       if (!res.ok) throw new Error('Error fetching data')
+    } catch (err) {
+      setErrorMessage(err.message)
+      setOrderError(true)
     } finally {
       setLoading(false)
     }
@@ -94,7 +100,7 @@ const CheckoutForm = ({ amount }) => {
         <div className='p-8 md:px-52  mt-20'>
            <PaymentElement/>
         <button type="submit" disabled={loading || !stripe || !elements} className='bg-primary text-white p-2 rounded-md w-full mt-8 hover:bg-blue-700'>{loading ? 'Paying...' : 'Submit'}</button>
-        {errorMessage && <div className='mt-12 text-red-500'>{errorMessage}</div>}
+        {errorMessage && <ErrorNotification/>}
         </div>
 
     </form>
