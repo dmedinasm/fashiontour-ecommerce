@@ -17,5 +17,5 @@ Fashion Tour is a fictional online store that showcases the implementation of es
 ## Technologies Used
 
 - Frontend: [ Nextjs ]
-- Backend: [Strapi HeadlessCMS]
+- Backend: [Prisma.js ORM, PostgresSQL Database]
 - Payment Integration: [ Stripe ] 
