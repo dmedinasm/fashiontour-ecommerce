@@ -1,13 +1,11 @@
 import { PrismaClient } from '@prisma/client'
+import { auth, firestore } from '../lib/firebase'
+import { collection, orderBy, query, limit, serverTimestamp, addDoc } from 'firebase/firestore'
 export const prisma = new PrismaClient()
-
-export const getProducts = async () => {
-  try {
-    const products = await prisma.product.findMany()
-    return products
-  } catch (err) {
-    console.error('Error fetching data', err)
-  }
+export const getProducts = () => {
+  const productsRef = collection(firestore, 'products')
+  const queryOrder = query(productsRef, orderBy('rating', 'desc'), limit(8))
+  return { queryOrder }
 }
 
 export const getProductById = async (paramId) => {
