@@ -5,14 +5,15 @@ import Breadcrumb from '../../_components/Breadcrumb'
 import ErrorNotification from '../../_components/ErrorNotification'
 import { getProductById, getProductByCategory } from '../../lib/data'
 const ProductDetail = async ({ params }) => {
-  const productDetail = await getProductById(params?.productId)
+  const productById = await getProductById(params?.productId)
+  const productDetail = { id: params?.productId, ...productById }
   const similarProducts = await getProductByCategory(productDetail?.category)
 
   return (
     <div>
       <div className="py-12 px-10 sm:px-28">
         <Breadcrumb />
-        {productDetail
+        { productDetail
           ? <div className="grid grid-cols-1 justify-items-start mt-10 ss:grid-cols-2 gap-10 ss:gap-0">
             <ProductBanner product={productDetail} />
             <ProductInfo product={productDetail} />
@@ -22,7 +23,7 @@ const ProductDetail = async ({ params }) => {
 
         <div className="mt-24">
           <h2 className="text-[20px] font-bold mt-10 mb-5">Similar Products</h2>
-          {similarProducts
+          { similarProducts
             ? <ProductList productList={similarProducts} />
             : <ErrorNotification />
           }

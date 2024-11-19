@@ -1,6 +1,9 @@
 import { PrismaClient } from '@prisma/client'
 import { auth, firestore } from '../lib/firebase'
-import { collection, orderBy, query, limit, serverTimestamp, addDoc } from 'firebase/firestore'
+import {
+  collection, orderBy, query, limit, where,
+  serverTimestamp, doc, getDoc, getDocs, addDoc
+} from 'firebase/firestore'
 export const prisma = new PrismaClient()
 export const getProducts = () => {
   const productsRef = collection(firestore, 'products')
@@ -9,29 +12,18 @@ export const getProducts = () => {
 }
 
 export const getProductById = async (paramId) => {
-  try {
-    const product = await prisma.product.findFirst({
-      where: {
-        id: paramId
-      }
-    })
-    return product
-  } catch (err) {
-    console.error('Error fetching data', err)
-  }
+  const productRef = doc(firestore, 'products', paramId)
+  const productSnapshot = await getDoc(productRef)
+  const productById = productSnapshot.data()
+  return productById
 }
 
 export const getProductByCategory = async (paramCategory) => {
-  try {
-    const products = await prisma.product.findMany({
-      where: {
-        category: paramCategory
-      }
-    })
-    return products
-  } catch (err) {
-    console.error('Error fetching data', err)
-  }
+  const productsRef = collection(firestore, 'products')
+  const q = query(productsRef, where('category', '==', paramCategory))
+  const productsSnapshot = await getDocs(q)
+  const productsByCategory = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+  return productsByCategory
 }
 
 export async function createCartWithProduct (userName, email, productId, quantity = 1) {
