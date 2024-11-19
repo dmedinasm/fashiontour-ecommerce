@@ -1,13 +1,12 @@
-import { PrismaClient } from '@prisma/client'
 import { auth, firestore } from '../lib/firebase'
 import {
   collection, orderBy, query, limit, where,
   serverTimestamp, doc, getDoc, getDocs, addDoc
 } from 'firebase/firestore'
-export const prisma = new PrismaClient()
-export const getProducts = () => {
+
+export const getProducts = (productLimit) => {
   const productsRef = collection(firestore, 'products')
-  const queryOrder = query(productsRef, orderBy('rating', 'desc'), limit(8))
+  const queryOrder = query(productsRef, orderBy('rating', 'desc'), limit(productLimit))
   return { queryOrder }
 }
 

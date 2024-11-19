@@ -4,8 +4,10 @@ import { getProducts } from '../lib/data'
 import { useCollection } from 'react-firebase-hooks/firestore'
 import ErrorNotification from '../_components/ErrorNotification'
 import ProductListSkeleton from './ProductListSkeleton'
+
+const PRODUCT_LIMIT = 8
 const ProductSection = () => {
-  const { queryOrder } = getProducts()
+  const { queryOrder } = getProducts(PRODUCT_LIMIT)
   const [snapshot, loading, error] = useCollection(queryOrder)
   const products = snapshot?.docs.map(doc => ({
     id: doc.id,
