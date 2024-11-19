@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useUser } from '@clerk/nextjs'
+import { auth } from '../lib/firebase'
+import { useAuthState } from 'react-firebase-hooks/auth'
 export function useOpenCart () {
-  const { isSignedIn } = useUser()
+  const [user] = useAuthState(auth)
   const [openCart, setOpenCart] = useState(false)
   useEffect(() => {
-    isSignedIn ? setOpenCart(true) : setOpenCart(false)
-  }, [isSignedIn])
+    user ? setOpenCart(true) : setOpenCart(false)
+  }, [user])
   return { openCart, setOpenCart }
 }

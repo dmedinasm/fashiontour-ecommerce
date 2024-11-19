@@ -1,8 +1,9 @@
 import React from 'react'
-import { useUser } from '@clerk/nextjs'
 import Link from 'next/link'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { auth } from '../lib/firebase'
 function VerticalMenu ({ isOpen, toggle }) {
-  const { isSignedIn } = useUser()
+  const [user] = useAuthState(auth)
   return (
     <div className={`absolute top-12 left-0 w-full bg-white border border-gray-200  mt-2 p-4 rounded-lg shadow-lg transition-all duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 invisible'} sm:hidden z-10`}>
       <ul className="space-y-1" onClick={() => toggle(!isOpen) }>
@@ -38,7 +39,7 @@ function VerticalMenu ({ isOpen, toggle }) {
             Contact Us
           </Link>
         </li>
-        <li className={isSignedIn ? 'hidden' : 'block ss:hidden'}>
+        <li className={user ? 'hidden' : 'block ss:hidden'}>
           <a
             href='/sign-in'
             className="block rounded-lg px-4 py-2 text-sm font-bold text-black hover:bg-gray-100  hover:text-gray-700"
@@ -46,7 +47,7 @@ function VerticalMenu ({ isOpen, toggle }) {
             Login
           </a>
         </li>
-        <li className={isSignedIn ? 'hidden' : 'block ss:hidden'}>
+        <li className={user ? 'hidden' : 'block ss:hidden'}>
           <a
             href='/sign-up'
             className="block rounded-lg px-4 py-2 text-sm font-bold text-black hover:bg-gray-100 hover:text-gray-700"

@@ -22,6 +22,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'fakestoreapi.com',
         pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        pathname: '/**'
       }
 
     ]

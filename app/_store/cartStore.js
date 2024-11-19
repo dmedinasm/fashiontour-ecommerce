@@ -5,6 +5,11 @@ export const useCartStore = create((set) => ({
   cart: [],
   loading: false,
   error: null,
+  tryLogin: false,
+
+  isTryLogin: (trying) => {
+    trying ? set({ tryLogin: true }) : set({ tryLogin: false })
+  },
   getCart: (email) => {
     fetch('/api/getcart', {
       method: 'POST',
