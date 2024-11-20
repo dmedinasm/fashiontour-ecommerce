@@ -25,7 +25,37 @@ export const getProductByCategory = async (paramCategory) => {
   return productsByCategory
 }
 
-export async function createCartWithProduct (userName, email, productId, quantity = 1) {
+export const addProductToCart = async (
+  userName,
+  email,
+  productId,
+  productTitle,
+  productImage,
+  productCategory,
+  productPrice,
+  quantity = 1) => {
+  const cartRef = collection(firestore, 'carts')
+  const productToAdd = {
+    username: userName,
+    email,
+    cartProductId: productId,
+    cartProductImage: productImage,
+    cartProductCategory: productCategory,
+    cartProductTitle: productTitle,
+    cartProductPrice: productPrice,
+    quantity
+  }
+  await addDoc(cartRef, productToAdd)
+}
+
+export const getCartProducts = (email) => {
+  const cartRef = collection(firestore, 'carts')
+  const queryOrder = query(cartRef, where('email', '==', email))
+  console.log(queryOrder)
+  console.log(email)
+  return { queryOrder }
+}
+/* export async function createCartWithProduct (userName, email, productId, quantity = 1) {
   try {
     const result = await prisma.cart.upsert({
       where: {
@@ -65,7 +95,7 @@ export async function createCartWithProduct (userName, email, productId, quantit
   } catch (err) {
     console.error('Error creating record', err)
   }
-}
+} */
 
 export async function getCartItems (email) {
   try {

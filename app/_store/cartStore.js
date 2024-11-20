@@ -6,6 +6,7 @@ export const useCartStore = create((set) => ({
   loading: false,
   error: null,
   tryLogin: false,
+  cartLength: 0,
 
   isTryLogin: (trying) => {
     trying ? set({ tryLogin: true }) : set({ tryLogin: false })
@@ -134,5 +135,8 @@ export const useCartStore = create((set) => ({
         const { products } = data
         set({ cart: products })
       })
+  },
+  getCartLength: (length) => {
+    set({ cartLength: length })
   }
 }))

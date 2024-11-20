@@ -1,17 +1,31 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import ErrorNotification from './ErrorNotification'
+import { getCartProducts } from '../lib/data'
+import { auth } from '../lib/firebase'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { useCartStore } from '../_store/cartStore'
+import { useEffect } from 'react'
 
-const Cart = ({ cart }) => {
+const Cart = () => {
+  const { getCartLength } = useCartStore()
+  const { queryOrder } = getCartProducts(auth.currentUser.email)
+
+  const [cart, loading] = useCollectionData(queryOrder, { idField: 'id' })
+  useEffect(() => {
+    getCartLength(cart?.length || 0)
+  }, [cart])// eslint-disable-line
+
   return (
-    <div className="h-[300px] w-[250px] bg-gray-100 rounded-md absolute mx-10 z-10 right-10 top-12 p-5 border drop-shadow-md overflow-auto">
+
+      <div className="h-[300px] w-[250px] bg-gray-100 rounded-md absolute mx-10 z-10   -right-2 top-6 p-5 border drop-shadow-md overflow-auto">
       <div className="mt-4 space-y-6">
-        { cart
-          ? <ul className="space-y-4">
+        { loading
+          ? <h3 className='text-center'>Loading...</h3>
+          : <ul className="space-y-4">
           {cart.map((item) => (
-            <li key={item.product.id} className="flex items-center gap-4">
+            <li key={item.cartProductId} className="flex items-center gap-4">
               <Image
-                src={item.product.image}
+                src={item.cartProductImage}
                 alt=""
                 width={64}
                 height={64}
@@ -20,23 +34,23 @@ const Cart = ({ cart }) => {
 
               <div>
                 <h3 className="text-sm text-gray-900 line-clamp-1">
-                  {item.product.title}
+                  {item.cartProductTitle}
                 </h3>
 
                 <dl className="mt-0.5 space-y-px text-[10px] text-gray-600">
                   <div>
-                    <dt className="inline">{item.product.category}</dt>
+                    <dt className="inline">{item.cartProductCategory}</dt>
                   </div>
 
                   <div>
-                    <dt className="inline">$ {item.product.price}</dt>
+                    <dt className="inline">$ {item.cartProductPrice}</dt>
                   </div>
                 </dl>
               </div>
             </li>
           ))}
         </ul>
-          : <ErrorNotification/>
+
         }
       </div>
       <div className="space-y-4 text-center">
@@ -57,5 +71,4 @@ const Cart = ({ cart }) => {
     </div>
   )
 }
-
 export default Cart

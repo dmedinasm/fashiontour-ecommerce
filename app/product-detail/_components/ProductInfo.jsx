@@ -1,27 +1,41 @@
 'use client'
 import { ShoppingCart } from 'lucide-react'
 import SkeltonEffect from './SkeltonEffect'
-import { useUser } from '@clerk/nextjs'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { auth } from '../../lib/firebase'
 import { useCartStore } from '../../_store/cartStore'
 import { Toaster } from 'sonner'
-
+import { useRouter } from 'next/navigation'
+import { addProductToCart } from '../../lib/data'
 const ProductInfo = ({ product }) => {
-  const { user, isSignedIn } = useUser()
-  const cart = useCartStore(state => state.cart)
+  const [user] = useAuthState(auth)
+  const route = useRouter()
+  const isTryLogin = useCartStore(state => state.isTryLogin)
+  /* const cart = useCartStore(state => state.cart) */
   const loading = useCartStore(state => state.loading)
   const error = useCartStore(state => state.error)
-  const addProductToCart = useCartStore(state => state.addProductToCart)
+
   const onAddToCartClick = (event) => {
     if (!user) {
-      window.location.href = '/sign-in'
+      route.push('/sign-in')
+      isTryLogin(true)
     } else {
       event.target.disabled = true
-      addProductToCart(user.fullName, user.primaryEmailAddress.emailAddress, product.id)
+      addProductToCart(
+        auth.currentUser.displayName,
+        auth.currentUser.email,
+        product.id,
+        product.title,
+        product.image,
+        product.category,
+        product.price
+      )
       event.target.disabled = false
     }
   }
   return (
-    <div >
+
+     <div >
       <Toaster richColors position='top-center' />
       {product
         ? <div>
@@ -34,14 +48,14 @@ const ProductInfo = ({ product }) => {
           }
           <h2 className='text-[30px] text-primary font-medium mt-5'>${product?.price}</h2>
           <button className='flex gap-2 py-3 hover:bg-blue-700 cursor-pointer px-10 text-white bg-primary rounded-lg mt-5'
-            disabled={error || !isSignedIn ? false : product.quantity === 0 || cart?.some(item => item.product.id === product.id)}
+            disabled={error || !user ? false : product.quantity === 0}
             onClick={(event) => onAddToCartClick(event)}>
             <ShoppingCart />
             {loading ? 'Adding...' : 'Add to Cart'}
           </button>
         </div>
         : <SkeltonEffect />
-      }
+    }
 
     </div>
 

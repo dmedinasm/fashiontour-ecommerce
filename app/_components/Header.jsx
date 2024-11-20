@@ -11,11 +11,13 @@ import Hamburger from '../_components/Hamburger'
 import { auth } from '../lib/firebase'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useRouter } from 'next/navigation'
+
 const Header = () => {
   const [user, loading] = useAuthState(auth)
   const route = useRouter()
   const [openMenu, setOpenMenu] = useState(false)
-  const cart = useCartStore((state) => state.cart)
+  const { cartLength } = useCartStore()
+  /* const cart = useCartStore((state) => state.cart) */
   const { tryLogin, isTryLogin } = useCartStore()
   const { openCart, setOpenCart } = useOpenCart()
 
@@ -105,10 +107,11 @@ const Header = () => {
                   : (
               <div className="flex items-center gap-5">
                 <h2
-                  className="flex gap-1 cursor-pointer"
+                  className="flex relative gap-1 cursor-pointer"
                   onClick={() => setOpenCart(!openCart)}
                 >
-                  <ShoppingCart />({cart?.length})
+                  <ShoppingCart />({cartLength})
+                  {openCart && <Cart />}
                 </h2>
                 <button
                   className="rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white shadow hover:bg-blue-600"
@@ -126,8 +129,6 @@ const Header = () => {
 
               </div>
                     )}
-
-            {openCart && <Cart cart={cart} />}
 
             <div className="block sm:hidden">
               <button
