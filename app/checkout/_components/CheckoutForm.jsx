@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
-import { useUser } from '@clerk/nextjs'
-import { useCartStore } from '../../_store/cartStore'
+import { auth } from '../../lib/firebase'
 import ErrorNotification from '../../_components/ErrorNotification'
+import { createOrder } from '../../lib/data'
 
 const CheckoutForm = ({ amount }) => {
-  const { user } = useUser()
-  const cart = useCartStore(state => state.cart)
+  /* const { user } = useUser() */
+  /* const cart = useCartStore(state => state.cart) */
   const stripe = useStripe()
   const elements = useElements()
   const [errorMessage, setErrorMessage] = useState()
   const [loading, setLoading] = useState(false)
-  const baseUrl = process.env.NEXT_PAYMENT_CONFIRM_URL || 'https://fashiontour-ecommerce-lt9q6u8pt.vercel.app'
+  const baseUrl = process.env.NEXT_PAYMENT_CONFIRM_URL
 
   const handleError = (error) => {
     setLoading(false)
@@ -33,7 +33,7 @@ const CheckoutForm = ({ amount }) => {
       if (submitError) throw submitError
 
       // 2. Create order
-      await createOrder()
+      createOrder(auth.currentUser.email, amount, auth.currentUser.displayName)
 
       // 3. Send email
       await sendEmail()
@@ -61,27 +61,27 @@ const CheckoutForm = ({ amount }) => {
     }
   }
 
-  const createOrder = async () => {
+  /* const createOrder = async () => {
     const res = await fetch('/api/order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email: user?.primaryEmailAddress.emailAddress,
+        email: auth?.currentUser.email,
         amount,
-        userName: user?.fullName,
+        userName: auth?.currentUser.displayName,
         cartId: cart?.CartId
       })
     })
     if (!res.ok) throw new Error('Error creating order')
-  }
+  } */
 
   const sendEmail = async () => {
     const res = await fetch('/api/send-email', {
       method: 'POST',
       body: JSON.stringify({
         amount,
-        email: user?.primaryEmailAddress.emailAddress,
-        fullName: user?.fullName
+        email: auth?.currentUser.email,
+        fullName: auth?.currentUser.displayName
       })
     })
     if (!res.ok) throw new Error('Error sending email')

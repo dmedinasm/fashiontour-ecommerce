@@ -5,7 +5,7 @@ export function useTotalAmount ({ cart }) {
   useEffect(() => {
     if (!cart || cart.length === 0) return
     const newCart = [...cart]
-    const total = newCart?.reduce((acc, item) => acc + (item.product.price * item.quantity), 0).toFixed(2)
+    const total = newCart?.reduce((acc, item) => acc + (item.cartProductPrice * item.quantity), 0).toFixed(2)
     setTotalPrice(total)
   }, [cart])
   return { totalPrice }

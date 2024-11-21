@@ -1,7 +1,7 @@
-import { auth, firestore } from '../lib/firebase'
+import { firestore } from '../lib/firebase'
 import {
-  collection, orderBy, query, limit, where,
-  serverTimestamp, doc, getDoc, getDocs, addDoc
+  collection, orderBy, query, limit, increment,
+  where, doc, getDoc, getDocs, deleteDoc, addDoc, updateDoc
 } from 'firebase/firestore'
 
 export const getProducts = (productLimit) => {
@@ -51,175 +51,48 @@ export const addProductToCart = async (
 export const getCartProducts = (email) => {
   const cartRef = collection(firestore, 'carts')
   const queryOrder = query(cartRef, where('email', '==', email))
-  console.log(queryOrder)
-  console.log(email)
   return { queryOrder }
 }
-/* export async function createCartWithProduct (userName, email, productId, quantity = 1) {
-  try {
-    const result = await prisma.cart.upsert({
-      where: {
-        email
-      },
-      create: {
-        userName,
-        email,
-        products: {
-          create: {
-            product: {
-              connect: { id: productId }
-            },
-            quantity
-          }
-        }
-      },
-      update: {
-        products: {
-          create: {
-            product: {
-              connect: { id: productId }
-            },
-            quantity
-          }
-        }
-      },
-      include: {
-        products: {
-          include: {
-            product: true
-          }
-        }
-      }
-    })
-    return result
-  } catch (err) {
-    console.error('Error creating record', err)
-  }
-} */
 
-export async function getCartItems (email) {
-  try {
-    const cartItems = await prisma.cart.findFirst({
-      where: {
-        email
-      },
-      include: {
-        products: {
-          include: {
-            product: true
-          }
-        }
-      }
-    })
-    return cartItems
-  } catch (err) {
-    console.error('Error fetching data', err)
-  }
+export const deleteProductFromCart = async (cartItemId) => {
+  const cartItemRef = doc(firestore, 'carts', cartItemId)
+
+  await deleteDoc(cartItemRef)
 }
 
-export async function disconnectProductFromCart (idCart, productId) {
-  try {
-    await prisma.cartProduct.deleteMany({
-      where: {
-        cartId: idCart,
-        productId
-      }
-    })
+export const incrementProductCartQty = async (cartItemId, incrementBy = 1) => {
+  const cartItemRef = doc(firestore, 'carts', cartItemId)
 
-    const updatedCart = await prisma.cart.findUnique({
-      where: { id: idCart },
-      include: {
-        products: {
-          include: {
-            product: true
-          }
-        }
-      }
-    })
-    return updatedCart
-  } catch (err) {
-    console.error('Error fetching data', err)
-  }
+  await updateDoc(cartItemRef, {
+    quantity: increment(incrementBy)
+  })
 }
 
-export async function incrementItemQuantity (idCart, productId) {
-  try {
-    const updatedItem = await prisma.cartProduct.update({
-      where: {
-        cartId_productId: { cartId: idCart, productId } //eslint-disable-line
-      },
-      data: {
-        quantity: {
-          increment: 1
-        }
-      }
-    })
+export const decrementProductCartQty = async (cartItemId, decrementBy = 1) => {
+  const cartItemRef = doc(firestore, 'carts', cartItemId)
 
-    const updatedCart = await prisma.cart.findUnique({
-      where: { id: updatedItem.cartId },
-      include: {
-        products: {
-          include: {
-            product: true
-          }
-        }
-      }
-    })
-
-    return updatedCart
-  } catch (err) {
-    console.error('Error fetching data', err)
-  }
+  await updateDoc(cartItemRef, {
+    quantity: increment(-decrementBy)
+  })
 }
 
-export async function decrementItemQuantity (idCart, productId) {
-  try {
-    const updatedItem = await prisma.cartProduct.update({
-      where: {
-        cartId_productId: { cartId: idCart, productId } //eslint-disable-line
-      },
-      data: {
-        quantity: {
-          decrement: 1
-        }
-      }
-    })
-
-    const updatedCart = await prisma.cart.findUnique({
-      where: { id: updatedItem.cartId },
-      include: {
-        products: {
-          include: {
-            product: true
-          }
-        }
-      }
-    })
-
-    return updatedCart
-  } catch (err) {
-    console.error('Error fetching data', err)
-  }
+export const emptyCart = async (email) => {
+  const cartRef = collection(firestore, 'carts')
+  const cartQuery = query(cartRef, where('email', '==', email))
+  const querySnapshot = await getDocs(cartQuery)
+  const deletePromises = querySnapshot.docs.map(docSnapshot =>
+    deleteDoc(doc(firestore, 'carts', docSnapshot.id))
+  )
+  await Promise.all(deletePromises)
 }
 
-export async function createOrder (email, amount, userName, cartId) {
-  try {
-    const order = await prisma.order.create({
-      data: {
-        email,
-        amount,
-        userName
-      }
-    })
-
-    const updatedCart = await prisma.cartProduct.deleteMany({
-      where: {
-        cartId
-      }
-    })
-
-    return { order, updatedCart }
-  } catch (err) {
-    console.error('Error creating order', err)
+export const createOrder = async (userEmail, amount, userName) => {
+  const orderRef = collection(firestore, 'orders')
+  const orderToAdd = {
+    email: userEmail,
+    amount,
+    userName
   }
+  await addDoc(orderRef, orderToAdd)
+  emptyCart(userEmail)
 }

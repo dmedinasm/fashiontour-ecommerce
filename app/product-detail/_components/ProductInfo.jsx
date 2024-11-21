@@ -11,7 +11,6 @@ const ProductInfo = ({ product }) => {
   const [user] = useAuthState(auth)
   const route = useRouter()
   const isTryLogin = useCartStore(state => state.isTryLogin)
-  /* const cart = useCartStore(state => state.cart) */
   const loading = useCartStore(state => state.loading)
   const error = useCartStore(state => state.error)
 

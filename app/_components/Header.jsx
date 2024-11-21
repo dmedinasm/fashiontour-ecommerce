@@ -20,7 +20,6 @@ const Header = () => {
   /* const cart = useCartStore((state) => state.cart) */
   const { tryLogin, isTryLogin } = useCartStore()
   const { openCart, setOpenCart } = useOpenCart()
-
   const handleLogin = () => {
     route.push('/sign-in')
     isTryLogin(true)

@@ -9,8 +9,8 @@ import { useEffect } from 'react'
 const Cart = () => {
   const { getCartLength } = useCartStore()
   const { queryOrder } = getCartProducts(auth.currentUser.email)
-
   const [cart, loading] = useCollectionData(queryOrder, { idField: 'id' })
+
   useEffect(() => {
     getCartLength(cart?.length || 0)
   }, [cart])// eslint-disable-line
@@ -55,7 +55,7 @@ const Cart = () => {
       </div>
       <div className="space-y-4 text-center">
         <Link
-          href={'/cart'}
+          href={'/cart/'}
           className="block rounded bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600 mt-10"
         >
           View my cart ({cart?.length})

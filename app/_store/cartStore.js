@@ -1,15 +1,20 @@
 import { create } from 'zustand'
 import { toast } from 'sonner'
-
-export const useCartStore = create((set) => ({
+export const useCartStore = create((set, get) => ({
   cart: [],
   loading: false,
   error: null,
   tryLogin: false,
   cartLength: 0,
+  openCart: false,
 
   isTryLogin: (trying) => {
     trying ? set({ tryLogin: true }) : set({ tryLogin: false })
+  },
+  handleCart: (userValue) => {
+    const openValue = get().openCart
+    set({ openCart: !openValue })
+    userValue ? set({ openCart: true }) : set({ openCart: false })
   },
   getCart: (email) => {
     fetch('/api/getcart', {
