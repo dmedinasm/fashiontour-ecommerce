@@ -1,5 +1,4 @@
 'use client'
-/* import { Url } from '../_services/fetchParams' */
 import { useRouter } from 'next/navigation'
 import { useTotalAmount } from '../_hooks/useTotalAmount'
 import Image from 'next/image'
@@ -10,7 +9,6 @@ import { Toaster } from 'sonner'
 import ErrorNotification from '../_components/ErrorNotification'
 import { useCartStore } from '../_store/cartStore'
 const Cart = () => {
-  /* const cart = useCartStore(state => state.cart) */
   const { queryOrder } = getCartProducts(auth.currentUser.email)
   const [snapshot, loading, error] = useCollection(queryOrder)
   const { isOpenCart } = useCartStore()
@@ -18,10 +16,6 @@ const Cart = () => {
     cartItemId: doc.id,
     ...doc.data()
   }))
-  console.log(cart)
-  /* const deleteItemfromCart = useCartStore(state => state.deleteItemfromCart)
-  const incrementProductCartQty = useCartStore(state => state.incrementProductCartQty)
-  const decrementProductCartQty = useCartStore(state => state.decrementProductCartQty) */
   const { totalPrice } = useTotalAmount({ cart })
   const router = useRouter()
 

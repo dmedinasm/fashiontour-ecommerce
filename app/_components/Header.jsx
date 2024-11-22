@@ -18,7 +18,6 @@ const Header = () => {
   const route = useRouter()
   const [openMenu, setOpenMenu] = useState(false)
   const { cartLength } = useCartStore()
-  /* const cart = useCartStore((state) => state.cart) */
   const { tryLogin, isTryLogin } = useCartStore()
   useOpenCart()
 
@@ -111,7 +110,7 @@ const Header = () => {
                   className="flex relative gap-1 cursor-pointer"
                   onClick={() => isOpenCart(!openCart)}
                 >
-                  <ShoppingCart />({cartLength})
+                  <ShoppingCart />({<span>{cartLength}</span> || <span>...</span>} )
                   {openCart && <Cart />}
                 </h2>
                 <button

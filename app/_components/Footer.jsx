@@ -2,11 +2,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { useTryLogin } from '../_hooks/useTryLogin'
+import { useCartStore } from '../_store/cartStore'
 
 const Footer = () => {
-  const { isTryLogin } = useTryLogin()
-  return !isTryLogin && (
+  const { tryLogin } = useCartStore()
+  return !tryLogin && (
     <footer className="bg-gray-100">
   <div className="mx-auto max-w-5xl px-4 py-16 ss:px-6 lg:px-8">
     <div className="flex justify-center text-teal-600">

@@ -3,15 +3,14 @@ import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { auth } from '../../lib/firebase'
 import ErrorNotification from '../../_components/ErrorNotification'
 import { createOrder } from '../../lib/data'
-
+import { useCartStore } from '../../_store/cartStore'
 const CheckoutForm = ({ amount }) => {
-  /* const { user } = useUser() */
-  /* const cart = useCartStore(state => state.cart) */
   const stripe = useStripe()
   const elements = useElements()
   const [errorMessage, setErrorMessage] = useState()
   const [loading, setLoading] = useState(false)
-  const baseUrl = process.env.NEXT_PAYMENT_CONFIRM_URL
+  const baseUrl = 'http://localhost:3000'
+  const { isOpenCart } = useCartStore()
 
   const handleError = (error) => {
     setLoading(false)
@@ -38,6 +37,7 @@ const CheckoutForm = ({ amount }) => {
       // 3. Send email
       await sendEmail()
 
+      isOpenCart(true)
       // 4. Create payment intent
       const clientPayment = await createPaymentIntent()
 
@@ -46,7 +46,13 @@ const CheckoutForm = ({ amount }) => {
         elements,
         clientSecret: clientPayment.client_secret,
         confirmParams: {
-          return_url: `${baseUrl}/payment-confirm`
+          return_url: `${baseUrl}/payment-confirm`,
+          payment_method_data: {
+            billing_details: {
+              name: auth.currentUser.displayName,
+              email: auth.currentUser.email
+            }
+          }
         }
       })
 
@@ -60,20 +66,6 @@ const CheckoutForm = ({ amount }) => {
       setLoading(false)
     }
   }
-
-  /* const createOrder = async () => {
-    const res = await fetch('/api/order', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: auth?.currentUser.email,
-        amount,
-        userName: auth?.currentUser.displayName,
-        cartId: cart?.CartId
-      })
-    })
-    if (!res.ok) throw new Error('Error creating order')
-  } */
 
   const sendEmail = async () => {
     const res = await fetch('/api/send-email', {

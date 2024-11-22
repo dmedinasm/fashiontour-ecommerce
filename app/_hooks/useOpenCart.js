@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { auth } from '../lib/firebase'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCartStore } from '../_store/cartStore'

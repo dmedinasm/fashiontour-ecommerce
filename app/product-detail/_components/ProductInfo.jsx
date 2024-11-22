@@ -7,7 +7,6 @@ import { useCartStore } from '../../_store/cartStore'
 import { Toaster } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { addProductToCart } from '../../lib/data'
-import { useOpenCart } from '../../_hooks/useOpenCart'
 const ProductInfo = ({ product }) => {
   const [user] = useAuthState(auth)
   const route = useRouter()
