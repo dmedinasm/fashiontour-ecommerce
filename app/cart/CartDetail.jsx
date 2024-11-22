@@ -8,10 +8,12 @@ import { useCollection } from 'react-firebase-hooks/firestore'
 import { getCartProducts, deleteProductFromCart, incrementProductCartQty, decrementProductCartQty } from '../lib/data'
 import { Toaster } from 'sonner'
 import ErrorNotification from '../_components/ErrorNotification'
+import { useCartStore } from '../_store/cartStore'
 const Cart = () => {
   /* const cart = useCartStore(state => state.cart) */
   const { queryOrder } = getCartProducts(auth.currentUser.email)
   const [snapshot, loading, error] = useCollection(queryOrder)
+  const { isOpenCart } = useCartStore()
   const cart = snapshot?.docs.map(doc => ({
     cartItemId: doc.id,
     ...doc.data()
@@ -25,6 +27,7 @@ const Cart = () => {
 
   const deleteItem = (cartItemId) => {
     deleteProductFromCart(cartItemId)
+    isOpenCart(true)
   }
 
   const incrementQty = (cartItemId) => {

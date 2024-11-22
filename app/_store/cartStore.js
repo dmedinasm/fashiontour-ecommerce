@@ -11,6 +11,9 @@ export const useCartStore = create((set, get) => ({
   isTryLogin: (trying) => {
     trying ? set({ tryLogin: true }) : set({ tryLogin: false })
   },
+  isOpenCart: (open) => {
+    open ? set({ openCart: true }) : set({ openCart: false })
+  },
   handleCart: (userValue) => {
     const openValue = get().openCart
     set({ openCart: !openValue })

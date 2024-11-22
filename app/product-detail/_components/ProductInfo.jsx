@@ -7,13 +7,14 @@ import { useCartStore } from '../../_store/cartStore'
 import { Toaster } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { addProductToCart } from '../../lib/data'
+import { useOpenCart } from '../../_hooks/useOpenCart'
 const ProductInfo = ({ product }) => {
   const [user] = useAuthState(auth)
   const route = useRouter()
   const isTryLogin = useCartStore(state => state.isTryLogin)
   const loading = useCartStore(state => state.loading)
   const error = useCartStore(state => state.error)
-
+  const { isOpenCart } = useCartStore()
   const onAddToCartClick = (event) => {
     if (!user) {
       route.push('/sign-in')
@@ -29,6 +30,7 @@ const ProductInfo = ({ product }) => {
         product.category,
         product.price
       )
+      isOpenCart(true)
       event.target.disabled = false
     }
   }

@@ -14,12 +14,14 @@ import { useRouter } from 'next/navigation'
 
 const Header = () => {
   const [user, loading] = useAuthState(auth)
+  const { openCart, isOpenCart } = useCartStore()
   const route = useRouter()
   const [openMenu, setOpenMenu] = useState(false)
   const { cartLength } = useCartStore()
   /* const cart = useCartStore((state) => state.cart) */
   const { tryLogin, isTryLogin } = useCartStore()
-  const { openCart, setOpenCart } = useOpenCart()
+  useOpenCart()
+
   const handleLogin = () => {
     route.push('/sign-in')
     isTryLogin(true)
@@ -107,7 +109,7 @@ const Header = () => {
               <div className="flex items-center gap-5">
                 <h2
                   className="flex relative gap-1 cursor-pointer"
-                  onClick={() => setOpenCart(!openCart)}
+                  onClick={() => isOpenCart(!openCart)}
                 >
                   <ShoppingCart />({cartLength})
                   {openCart && <Cart />}
