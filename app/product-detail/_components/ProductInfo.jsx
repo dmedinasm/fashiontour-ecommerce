@@ -11,9 +11,7 @@ const ProductInfo = ({ product }) => {
   const [user] = useAuthState(auth)
   const route = useRouter()
   const isTryLogin = useCartStore(state => state.isTryLogin)
-  const loading = useCartStore(state => state.loading)
-  const error = useCartStore(state => state.error)
-  const { isOpenCart } = useCartStore()
+  const { isOpenCart, cart } = useCartStore()
   const onAddToCartClick = (event) => {
     if (!user) {
       route.push('/sign-in')
@@ -48,10 +46,10 @@ const ProductInfo = ({ product }) => {
           }
           <h2 className='text-[30px] text-primary font-medium mt-5'>${product?.price}</h2>
           <button className='flex gap-2 py-3 hover:bg-blue-700 cursor-pointer px-10 text-white bg-primary rounded-lg mt-5'
-            disabled={error || !user ? false : product.quantity === 0}
+            disabled={!user ? false : (product.quantity === 0 || cart?.some(item => item.cartProductId === product.id)) }
             onClick={(event) => onAddToCartClick(event)}>
             <ShoppingCart />
-            {loading ? 'Adding...' : 'Add to Cart'}
+            Add to Cart
           </button>
         </div>
         : <SkeltonEffect />

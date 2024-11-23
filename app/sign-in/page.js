@@ -3,7 +3,7 @@ import SignIn from '../_components/SignIn'
 export default function Page () {
   return (
 <section className="bg-white">
-  <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
+  <div className="lg:grid lg:min-h-screen lg:grid-cols-12 ">
     <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
       <Image
         alt="auth-image"
@@ -18,11 +18,11 @@ export default function Page () {
           <Image src='/logo.png' alt='logo sign-in' width={100} height={100} />
         </a>
 
-        <h2 className="mt-6 text-2xl font-bold text-gray-200 sm:text-3xl md:text-4xl">
+        <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
           Welcome to Fashion Tour Store
         </h2>
 
-        <p className="mt-4 leading-relaxed  text-gray-200">
+        <p className="mt-4 leading-relaxed  text-white">
         Style that sparks your creativity, shopping that brings you joy.
         </p>
       </div>

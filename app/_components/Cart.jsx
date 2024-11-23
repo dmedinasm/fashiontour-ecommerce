@@ -7,12 +7,12 @@ import { useCartStore } from '../_store/cartStore'
 import { useEffect } from 'react'
 
 const Cart = () => {
-  const { getCartLength } = useCartStore()
+  const { getCart } = useCartStore()
   const { queryOrder } = getCartProducts(auth.currentUser.email)
   const [cart, loading] = useCollectionData(queryOrder, { idField: 'id' })
 
   useEffect(() => {
-    getCartLength(cart?.length || 0)
+    getCart(cart)
   }, [cart])// eslint-disable-line
 
   return (

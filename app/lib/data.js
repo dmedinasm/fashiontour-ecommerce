@@ -3,7 +3,7 @@ import {
   collection, orderBy, query, limit, increment,
   where, doc, getDoc, getDocs, deleteDoc, addDoc, updateDoc
 } from 'firebase/firestore'
-
+import { toast } from 'sonner'
 export const getProducts = (productLimit) => {
   const productsRef = collection(firestore, 'products')
   const queryOrder = query(productsRef, orderBy('rating', 'desc'), limit(productLimit))
@@ -34,18 +34,24 @@ export const addProductToCart = async (
   productCategory,
   productPrice,
   quantity = 1) => {
-  const cartRef = collection(firestore, 'carts')
-  const productToAdd = {
-    username: userName,
-    email,
-    cartProductId: productId,
-    cartProductImage: productImage,
-    cartProductCategory: productCategory,
-    cartProductTitle: productTitle,
-    cartProductPrice: productPrice,
-    quantity
+  try {
+    const cartRef = collection(firestore, 'carts')
+    const productToAdd = {
+      username: userName,
+      email,
+      cartProductId: productId,
+      cartProductImage: productImage,
+      cartProductCategory: productCategory,
+      cartProductTitle: productTitle,
+      cartProductPrice: productPrice,
+      quantity
+    }
+    await addDoc(cartRef, productToAdd)
+    toast.success('Product added to cart')
+  } catch (e) {
+    console.error(e)
+    toast.error('Error adding product to cart')
   }
-  await addDoc(cartRef, productToAdd)
 }
 
 export const getCartProducts = (email) => {
@@ -55,9 +61,14 @@ export const getCartProducts = (email) => {
 }
 
 export const deleteProductFromCart = async (cartItemId) => {
-  const cartItemRef = doc(firestore, 'carts', cartItemId)
-
-  await deleteDoc(cartItemRef)
+  try {
+    const cartItemRef = doc(firestore, 'carts', cartItemId)
+    await deleteDoc(cartItemRef)
+    toast.success('Product deleted from cart')
+  } catch (e) {
+    console.error(e)
+    toast.error('Error deleting product from cart')
+  }
 }
 
 export const incrementProductCartQty = async (cartItemId, incrementBy = 1) => {
