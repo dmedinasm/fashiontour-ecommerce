@@ -98,12 +98,17 @@ export const emptyCart = async (email) => {
 }
 
 export const createOrder = async (userEmail, amount, userName) => {
-  const orderRef = collection(firestore, 'orders')
-  const orderToAdd = {
-    email: userEmail,
-    amount,
-    userName
+  try {
+    const orderRef = collection(firestore, 'orders')
+    const orderToAdd = {
+      email: userEmail,
+      amount,
+      userName
+    }
+    await addDoc(orderRef, orderToAdd)
+    emptyCart(userEmail)
+  } catch (e) {
+    console.error(e)
+    throw new Error('Error creating order')
   }
-  await addDoc(orderRef, orderToAdd)
-  emptyCart(userEmail)
 }

@@ -5,11 +5,12 @@ import { auth } from '../lib/firebase'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useCartStore } from '../_store/cartStore'
 import { useEffect } from 'react'
+import ErrorNotification from './ErrorNotification'
 
 const Cart = () => {
   const { getCart } = useCartStore()
   const { queryOrder } = getCartProducts(auth.currentUser.email)
-  const [cart, loading] = useCollectionData(queryOrder, { idField: 'id' })
+  const [cart, loading, error] = useCollectionData(queryOrder, { idField: 'id' })
 
   useEffect(() => {
     getCart(cart)
@@ -21,7 +22,9 @@ const Cart = () => {
       <div className="mt-4 space-y-6">
         { loading
           ? <h3 className='text-center'>Loading...</h3>
-          : <ul className="space-y-4">
+          : error
+            ? <ErrorNotification />
+            : <ul className="space-y-4">
           {cart.map((item) => (
             <li key={item.cartProductId} className="flex items-center gap-4">
               <Image
