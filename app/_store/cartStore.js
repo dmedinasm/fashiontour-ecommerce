@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export const useCartStore = create((set, get) => ({
+export const useCartStore = create((set) => ({
   cart: [],
   tryLogin: false,
   cartLength: 0,
@@ -12,15 +12,7 @@ export const useCartStore = create((set, get) => ({
   isOpenCart: (open) => {
     open ? set({ openCart: true }) : set({ openCart: false })
   },
-  handleCart: (userValue) => {
-    const openValue = get().openCart
-    set({ openCart: !openValue })
-    userValue ? set({ openCart: true }) : set({ openCart: false })
-  },
   getCart: (cart) => {
     set({ cart })
-  },
-  getCartLength: (length) => {
-    set({ cartLength: length })
   }
 }))

@@ -11,18 +11,26 @@ export const getProducts = (productLimit) => {
 }
 
 export const getProductById = async (paramId) => {
-  const productRef = doc(firestore, 'products', paramId)
-  const productSnapshot = await getDoc(productRef)
-  const productById = productSnapshot.data()
-  return productById
+  try {
+    const productRef = doc(firestore, 'products', paramId)
+    const productSnapshot = await getDoc(productRef)
+    const productById = productSnapshot.data()
+    return productById
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 export const getProductByCategory = async (paramCategory) => {
-  const productsRef = collection(firestore, 'products')
-  const q = query(productsRef, where('category', '==', paramCategory))
-  const productsSnapshot = await getDocs(q)
-  const productsByCategory = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-  return productsByCategory
+  try {
+    const productsRef = collection(firestore, 'products')
+    const q = query(productsRef, where('category', '==', paramCategory))
+    const productsSnapshot = await getDocs(q)
+    const productsByCategory = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    return productsByCategory
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 export const addProductToCart = async (
@@ -72,29 +80,40 @@ export const deleteProductFromCart = async (cartItemId) => {
 }
 
 export const incrementProductCartQty = async (cartItemId, incrementBy = 1) => {
-  const cartItemRef = doc(firestore, 'carts', cartItemId)
-
-  await updateDoc(cartItemRef, {
-    quantity: increment(incrementBy)
-  })
+  try {
+    const cartItemRef = doc(firestore, 'carts', cartItemId)
+    await updateDoc(cartItemRef, {
+      quantity: increment(incrementBy)
+    })
+  } catch (e) {
+    toast.error('Error incrementing product cart quantity')
+  }
 }
 
 export const decrementProductCartQty = async (cartItemId, decrementBy = 1) => {
-  const cartItemRef = doc(firestore, 'carts', cartItemId)
-
-  await updateDoc(cartItemRef, {
-    quantity: increment(-decrementBy)
-  })
+  try {
+    const cartItemRef = doc(firestore, 'carts', cartItemId)
+    await updateDoc(cartItemRef, {
+      quantity: increment(-decrementBy)
+    })
+  } catch (e) {
+    toast.error('Error decrementing product cart quantity')
+  }
 }
 
 export const emptyCart = async (email) => {
-  const cartRef = collection(firestore, 'carts')
-  const cartQuery = query(cartRef, where('email', '==', email))
-  const querySnapshot = await getDocs(cartQuery)
-  const deletePromises = querySnapshot.docs.map(docSnapshot =>
-    deleteDoc(doc(firestore, 'carts', docSnapshot.id))
-  )
-  await Promise.all(deletePromises)
+  try {
+    const cartRef = collection(firestore, 'carts')
+    const cartQuery = query(cartRef, where('email', '==', email))
+    const querySnapshot = await getDocs(cartQuery)
+    const deletePromises = querySnapshot.docs.map(docSnapshot =>
+      deleteDoc(doc(firestore, 'carts', docSnapshot.id))
+    )
+    await Promise.all(deletePromises)
+  } catch (e) {
+    console.error(e)
+    toast.error('Error emptying cart')
+  }
 }
 
 export const createOrder = async (userEmail, amount, userName) => {
@@ -109,6 +128,6 @@ export const createOrder = async (userEmail, amount, userName) => {
     emptyCart(userEmail)
   } catch (e) {
     console.error(e)
-    throw new Error('Error creating order')
+    toast.error('Error creating order')
   }
 }
