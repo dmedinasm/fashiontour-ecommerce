@@ -22,7 +22,7 @@ const Cart = () => {
       <div className="mt-4 space-y-6">
         { loading
           ? <h3 className='text-center'>Loading...</h3>
-          : error || !cart
+          : error
             ? <ErrorNotification />
             : <ul className="space-y-4">
           {cart.map((item) => (

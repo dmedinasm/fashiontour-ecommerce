@@ -5,6 +5,7 @@ import { getProducts } from '../lib/data'
 import { useCollection } from 'react-firebase-hooks/firestore'
 import SkeletonProducts from './SkeletonProducts'
 import ErrorNotification from '../_components/ErrorNotification'
+
 const PRODUCT_LIMIT = 30
 function Products ({ query }) {
   const { queryOrder } = getProducts(PRODUCT_LIMIT)
@@ -21,11 +22,11 @@ function Products ({ query }) {
     <>
       { loading
         ? <SkeletonProducts/>
-        : error
+        : error || products?.length === 0
           ? <ErrorNotification/>
-          : searchedProducts?.length > 0
+          : searchedProducts.length > 0
             ? <div className='mt-4 grid ss:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-10 p-10'>
-            {searchedProducts?.map(product =>
+            {searchedProducts.map((product) =>
             <ProductItem key={product.id} product={product}/>
             )}
       </div>

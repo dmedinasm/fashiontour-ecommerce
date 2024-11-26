@@ -1,12 +1,12 @@
 'use client'
 import { ShoppingCart } from 'lucide-react'
-import SkeltonEffect from './SkeltonEffect'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth } from '../../lib/firebase'
 import { useCartStore } from '../../_store/cartStore'
 import { Toaster } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { addProductToCart } from '../../lib/data'
+import ErrorNotification from '../../_components/ErrorNotification'
 const ProductInfo = ({ product }) => {
   const [user] = useAuthState(auth)
   const route = useRouter()
@@ -52,7 +52,7 @@ const ProductInfo = ({ product }) => {
             Add to Cart
           </button>
         </div>
-        : <SkeltonEffect />
+        : <ErrorNotification/>
     }
 
     </div>
