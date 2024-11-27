@@ -51,7 +51,7 @@ const Cart = () => {
                   <Image
                     src={item.cartProductImage}
                     alt=""
-                    className="size-16 rounded object-cover" width={64} height={64}
+                    className="w-fit object-center object-cover" width={64} height={64}
                   />
 
                   <div >
