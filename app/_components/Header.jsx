@@ -29,7 +29,7 @@ const Header = () => {
   return !tryLogin && (
     <header className='bg-white shadow-sm'>
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-16 items-center  justify-between">
           <Link href="/">
             <Image
               src="/logo.png"
@@ -40,9 +40,9 @@ const Header = () => {
             />
           </Link>
 
-          <div className="hidden sm:block">
+          <div className="ml-8 hidden sm:block grow">
             <nav aria-label="Global">
-              <ul className="flex items-center gap-6 text-md">
+              <ul className="flex  items-center gap-6 text-md">
                 <li>
                   <Link
                     className="text-gray-500 transition hover:text-gray-500/75"
@@ -88,7 +88,7 @@ const Header = () => {
             </nav>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex w-fit items-center gap-4">
             {loading
               ? (
               <div className=" w-10 h-10 rounded-full object-cover object-center my-0.5 mx-1.5 bg-slate-200 animate-pulse" ></div>
@@ -114,7 +114,7 @@ const Header = () => {
                   {openCart && <Cart />}
                 </h2>
                 <button
-                  className="rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white shadow hover:bg-blue-600"
+                  className="hidden ss:block rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white shadow hover:bg-blue-600"
                   onClick={() => auth.signOut()}
                 >
                   Sign Out

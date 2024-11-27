@@ -18,13 +18,15 @@ const Cart = () => {
 
   return (
 
-      <div className="h-[300px] w-[250px] bg-gray-100 rounded-md absolute mx-10 z-10   -right-2 top-6 p-5 border drop-shadow-md overflow-auto">
+      <div className="h-[300px] w-[220px] xs:w-[250px] bg-gray-100 rounded-md absolute mx-10 z-10   -right-20 xs:-right-10 top-8 p-5 border drop-shadow-md overflow-auto">
       <div className="mt-4 space-y-6">
         { loading
           ? <h3 className='text-center'>Loading...</h3>
           : error
             ? <ErrorNotification />
-            : <ul className="space-y-4">
+            : cart.length === 0
+              ? <h4 className='text-center flex  justify-center items-center h-16 '>Empty Cart</h4>
+              : <ul className="space-y-4">
           {cart.map((item) => (
             <li key={item.cartProductId} className="flex items-center gap-4">
               <Image

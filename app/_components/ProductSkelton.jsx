@@ -1,6 +1,6 @@
 const ProductSkeleton = () => {
   return (
-      <div className='flex flex-col justify-center items-center bg-gray-200 mb-10 max-w-md animate-pulse rounded-lg'>
+      <div className='flex flex-col  justify-center items-center bg-gray-200 mb-10 max-w-full animate-pulse rounded-lg'>
         <div className=' h-[200px] bg-gray-100 animate-pulse'>
           {/* Placeholder for image */}
         </div>
