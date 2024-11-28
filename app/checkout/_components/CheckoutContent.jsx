@@ -33,7 +33,7 @@ const CheckoutContent = () => {
   }
 
   return (
-    <div className='mx-auto my-40 ss:max-w-5xl'>
+    <div className='m-auto mb-10 ss:max-w-5xl'>
       <Elements stripe={stripePromise} options={options}>
       <CheckoutForm amount={Number(searchParams.get('amount'))} />
     </Elements>
