@@ -14,7 +14,7 @@ const ProductDetail = async ({ params }) => {
       <div className="py-12 px-10 sm:px-28">
         <Breadcrumb />
         { productById
-          ? <div className="grid grid-cols-1 justify-items-start mt-10 ss:grid-cols-2 gap-10 ss:gap-0">
+          ? <div className="flex flex-col sm:flex-row items-center">
             <ProductBanner product={productDetail} />
             <ProductInfo product={productDetail} />
           </div>

@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { auth } from '../../lib/firebase'
 import ErrorNotification from '../../_components/ErrorNotification'
 import { createOrder } from '../../lib/data'
 import { useCartStore } from '../../_store/cartStore'
+import SkeletonCheck from './SkeletonCheck'
 const CheckoutForm = ({ amount }) => {
   const stripe = useStripe()
   const elements = useElements()
@@ -99,7 +100,9 @@ const CheckoutForm = ({ amount }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className='p-8 md:px-52 mt-20'>
+        <Suspense fallback={<SkeletonCheck/>}>
         <PaymentElement/>
+        </Suspense>
         <button
           type="submit"
           disabled={loading || !stripe || !elements}

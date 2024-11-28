@@ -32,10 +32,10 @@ const ProductInfo = ({ product }) => {
   }
   return (
 
-     <div >
+     <div className='flex-1'>
       <Toaster richColors position='top-center' />
       {product
-        ? <div>
+        ? <div >
           <h2 className='text-[20px] '>{product?.title}</h2>
           <h2 className='text-[15px] text-gray-500'>{product?.category}</h2>
           <h2 className='text-[15px] text-gray-700 mt-5'>{product?.description}</h2>

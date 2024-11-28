@@ -105,10 +105,10 @@ const Header = () => {
                   : (
               <div className="flex items-center gap-5">
                 <h2
-                  className="flex relative gap-1 cursor-pointer"
+                  className="flex relative gap-1 "
                   onClick={() => isOpenCart(!openCart)}
                 >
-                  <ShoppingCart />({<span>{cart?.length}</span> || <span>...</span>} )
+                  <ShoppingCart className='cursor-pointer hover:opacity-60' />(<span>{cart?.length}</span> )
                   {openCart && <Cart />}
                 </h2>
                 <button
