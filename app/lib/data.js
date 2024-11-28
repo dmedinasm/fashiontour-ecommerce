@@ -4,8 +4,10 @@ import {
   where, doc, getDoc, getDocs, deleteDoc, addDoc, updateDoc
 } from 'firebase/firestore'
 import { toast } from 'sonner'
+
+const productsRef = collection(firestore, 'products')
+const cartRef = collection(firestore, 'carts')
 export const getProducts = (productLimit) => {
-  const productsRef = collection(firestore, 'products')
   const queryOrder = query(productsRef, orderBy('rating', 'desc'), limit(productLimit))
   return { queryOrder }
 }
@@ -23,7 +25,6 @@ export const getProductById = async (paramId) => {
 
 export const getProductByCategory = async (paramCategory) => {
   try {
-    const productsRef = collection(firestore, 'products')
     const q = query(productsRef, where('category', '==', paramCategory))
     const productsSnapshot = await getDocs(q)
     const productsByCategory = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
@@ -43,7 +44,6 @@ export const addProductToCart = async (
   productPrice,
   quantity = 1) => {
   try {
-    const cartRef = collection(firestore, 'carts')
     const productToAdd = {
       username: userName,
       email,
@@ -63,7 +63,6 @@ export const addProductToCart = async (
 }
 
 export const getCartProducts = (email) => {
-  const cartRef = collection(firestore, 'carts')
   const queryOrder = query(cartRef, where('email', '==', email))
   return { queryOrder }
 }
@@ -103,7 +102,6 @@ export const decrementProductCartQty = async (cartItemId, decrementBy = 1) => {
 
 export const emptyCart = async (email) => {
   try {
-    const cartRef = collection(firestore, 'carts')
     const cartQuery = query(cartRef, where('email', '==', email))
     const querySnapshot = await getDocs(cartQuery)
     const deletePromises = querySnapshot.docs.map(docSnapshot =>
@@ -128,6 +126,6 @@ export const createOrder = async (userEmail, amount, userName) => {
     emptyCart(userEmail)
   } catch (e) {
     console.error(e)
-    toast.error('Error creating order')
+    throw new Error('Error creating order')
   }
 }

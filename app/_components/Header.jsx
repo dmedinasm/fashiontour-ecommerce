@@ -14,11 +14,9 @@ import { useRouter } from 'next/navigation'
 
 const Header = () => {
   const [user, loading] = useAuthState(auth)
-  const { openCart, isOpenCart } = useCartStore()
   const route = useRouter()
   const [openMenu, setOpenMenu] = useState(false)
-  const { cart } = useCartStore()
-  const { tryLogin, isTryLogin } = useCartStore()
+  const { tryLogin, isTryLogin, cart, openCart, isOpenCart } = useCartStore()
   useOpenCart()
 
   const handleLogin = () => {

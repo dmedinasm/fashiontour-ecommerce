@@ -31,7 +31,7 @@ const CheckoutForm = ({ amount }) => {
       const { error: submitError } = await elements.submit()
       if (submitError) throw submitError
 
-      // 2. Create order
+      /* // 2. Create order
       createOrder(auth.currentUser.email, amount, auth.currentUser.displayName)
 
       // 3. Send email
@@ -39,7 +39,15 @@ const CheckoutForm = ({ amount }) => {
 
       isOpenCart(true)
       // 4. Create payment intent
-      const clientPayment = await createPaymentIntent()
+      const clientPayment = await createPaymentIntent() */
+
+      const [, , clientPayment] = await Promise.all([
+        createOrder(auth.currentUser.email, amount, auth.currentUser.displayName),
+        sendEmail(),
+        createPaymentIntent()
+      ])
+
+      isOpenCart(true)
 
       // 5. Confirm payment
       const { error: paymentError } = await stripe.confirmPayment({

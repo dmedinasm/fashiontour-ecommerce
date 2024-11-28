@@ -10,8 +10,7 @@ import ErrorNotification from '../../_components/ErrorNotification'
 const ProductInfo = ({ product }) => {
   const [user] = useAuthState(auth)
   const route = useRouter()
-  const isTryLogin = useCartStore(state => state.isTryLogin)
-  const { isOpenCart, cart } = useCartStore()
+  const { isOpenCart, isTryLogin, cart } = useCartStore()
   const onAddToCartClick = (event) => {
     if (!user) {
       route.push('/sign-in')
