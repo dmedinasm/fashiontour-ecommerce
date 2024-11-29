@@ -49,8 +49,8 @@ export default function Page () {
           Style that sparks your creativity, shopping that brings you joy.
           </p>
         </div>
-        <div>
-        <Image src='./chat-login.svg' alt='image sign-in' width={400} height={400} className='flex justify-center items-center'/>
+        <div className='flex justify-center items-center my-10'>
+        <Image src='/logo.png' alt='image sign-in' width={300} height={300} />
         </div>
         <SignIn />
       </div>
