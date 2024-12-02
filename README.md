@@ -9,7 +9,7 @@ Fashion Tour is a fictional online store that showcases the implementation of es
 ## Features
 
 - Product browsing and searching
-- User registration and authentication
+- User authentication with Google
 - Shopping cart functionality
 - Checkout process
 - Responsive design for mobile and desktop
@@ -17,5 +17,5 @@ Fashion Tour is a fictional online store that showcases the implementation of es
 ## Technologies Used
 
 - Frontend: [ Nextjs ]
-- Backend: [Prisma.js ORM, PostgresSQL Database]
+- Backend: [ Firebase ]
 - Payment Integration: [ Stripe ] 
